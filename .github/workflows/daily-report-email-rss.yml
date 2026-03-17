@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   email-rss-report:
@@ -26,12 +27,21 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Download report artifact
-        uses: actions/download-artifact@v4
+      - name: Download report artifact from triggering workflow run
+        uses: actions/download-artifact@v5
         with:
           name: defi-report
           path: .
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
+
+      - name: Verify downloaded files
+        run: |
+          echo "Triggered by workflow run id: ${{ github.event.workflow_run.id }}"
+          pwd
+          ls -la
+          test -f report.md
 
       - name: Show report preview
         run: head -50 report.md
@@ -46,11 +56,15 @@ jobs:
 
       - name: Commit RSS
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/rss.xml
-          git commit -m "update RSS feed" || echo "no changes"
-          git push
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "update RSS feed"
+            git push
+          fi
 
       - name: Send HTML Email
         uses: dawidd6/action-send-mail@v6
@@ -59,26 +73,16 @@ jobs:
           server_port: ${{ vars.EMAIL_SERVER_PORT }}
           username: ${{ secrets.EMAIL_USERNAME }}
           password: ${{ secrets.EMAIL_PASSWORD }}
-
           subject: "${{ vars.EMAIL_SUBJECT_PREFIX }} DeFi Daily Report"
-
           to: ${{ secrets.EMAIL_TO }}
           from: ${{ secrets.EMAIL_USERNAME }}
-
           html_body: |
             <h2>DeFi Daily Report</h2>
-
             <p>The latest DeFi market report is attached.</p>
-
             <p>
-            RSS feed:<br>
-            <a href="${{ vars.RSS_SELF_LINK }}">
-            ${{ vars.RSS_SELF_LINK }}
-            </a>
+              RSS feed:<br>
+              <a href="${{ vars.RSS_SELF_LINK }}">${{ vars.RSS_SELF_LINK }}</a>
             </p>
-
             <hr>
-
             <p>Generated automatically by GitHub Actions.</p>
-
           attachments: report.md
