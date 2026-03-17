@@ -66,4 +66,4 @@ ${items.join("\n")}
 fs.mkdirSync("docs", { recursive: true });
 fs.writeFileSync(RSS_FILE, rss);
 
-console.log("RSS updated");
+console.log("RSS updated");  
