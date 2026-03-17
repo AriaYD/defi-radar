@@ -1,0 +1,113 @@
+name: Daily DeFi Email + RSS Report
+
+on:
+  schedule:
+    # 默认 UTC 00:00 = 北京时间 08:00
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+      EMAIL_SERVER: ${{ vars.EMAIL_SERVER }}
+      EMAIL_SERVER_PORT: ${{ vars.EMAIL_SERVER_PORT }}
+      REPORT_TIMEZONE: ${{ vars.REPORT_TIMEZONE }}
+      RSS_TITLE: ${{ vars.RSS_TITLE }}
+      RSS_DESCRIPTION: ${{ vars.RSS_DESCRIPTION }}
+      RSS_LINK: ${{ vars.RSS_LINK }}
+      RSS_SELF_LINK: ${{ vars.RSS_SELF_LINK }}
+      EMAIL_SUBJECT_PREFIX: ${{ vars.EMAIL_SUBJECT_PREFIX }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Generate markdown report
+        run: node dist/cli.js report --stdout > report.md 2> logs.txt
+
+      - name: Show debug logs
+        if: always()
+        run: |
+          echo "=== Logs ==="
+          cat logs.txt || true
+          echo ""
+          echo "=== Report preview ==="
+          head -40 report.md || true
+
+      - name: Verify report exists
+        run: test -s report.md
+
+      - name: Create RSS XML
+        run: node scripts/generate-rss.mjs
+
+      - name: Ensure docs directory
+        run: mkdir -p docs
+
+      - name: Move RSS feed into docs
+        run: mv rss.xml docs/rss.xml
+
+      - name: Commit RSS update
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/rss.xml
+          if git diff --cached --quiet; then
+            echo "No RSS changes to commit"
+          else
+            git commit -m "chore: update daily RSS feed"
+            git push
+          fi
+
+      - name: Create GitHub issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          gh issue create \
+            --title "DeFi Daily Report — ${DATE}" \
+            --body-file report.md \
+            --label "daily-report"
+
+      - name: Send email
+        if: ${{ secrets.EMAIL_USERNAME != '' && secrets.EMAIL_PASSWORD != '' && secrets.EMAIL_TO != '' && vars.EMAIL_SERVER != '' && vars.EMAIL_SERVER_PORT != '' }}
+        uses: dawidd6/action-send-mail@v6
+        with:
+          server_address: ${{ vars.EMAIL_SERVER }}
+          server_port: ${{ vars.EMAIL_SERVER_PORT }}
+          username: ${{ secrets.EMAIL_USERNAME }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: "${{ vars.EMAIL_SUBJECT_PREFIX }} DeFi Daily Report"
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_USERNAME }}
+          body: |
+            Attached is today's DeFi report.
+
+            RSS feed:
+            ${{ vars.RSS_SELF_LINK }}
+          attachments: report.md
