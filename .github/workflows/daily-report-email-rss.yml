@@ -1,5 +1,8 @@
 name: Daily DeFi Email + RSS Report
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 on:
   workflow_run:
     workflows: ["Daily DeFi Report"]
@@ -23,11 +26,12 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Download artifact
+      - name: Download report artifact
         uses: actions/download-artifact@v4
         with:
           name: defi-report
           path: .
+          run-id: ${{ github.event.workflow_run.id }}
 
       - name: Show report preview
         run: head -50 report.md
