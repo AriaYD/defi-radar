@@ -12,12 +12,8 @@ permissions:
 jobs:
   generate-report:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     env:
-      # All optional — falls back to public RPCs if not set
-      ETH_RPC_URL: ${{ secrets.ETH_RPC_URL }}
-      ARB_RPC_URL: ${{ secrets.ARB_RPC_URL }}
-      BASE_RPC_URL: ${{ secrets.BASE_RPC_URL }}
       COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
     steps:
       - uses: actions/checkout@v4
@@ -37,16 +33,16 @@ jobs:
         run: pnpm build
 
       - name: Generate report
-        run: node dist/cli.js report --locale en --stdout > report.md 2> logs.txt || true
+        run: node dist/cli.js report --stdout > report.md 2> logs.txt || true
 
       - name: Show debug logs
         if: always()
         run: |
-          echo "=== Report logs ==="
+          echo "=== Logs ==="
           cat logs.txt || true
           echo ""
-          echo "=== Report preview (first 30 lines) ==="
-          head -30 report.md || true
+          echo "=== Report preview ==="
+          head -40 report.md || true
 
       - name: Create GitHub issue
         env:
