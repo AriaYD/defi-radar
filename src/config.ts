@@ -10,40 +10,14 @@ export function getConfigPath(): string {
   return process.env.DEFI_RADAR_CONFIG ?? CONFIG_FILE;
 }
 
-/**
- * Build config from environment variables (for CI).
- * Returns null if no relevant env vars are set.
- */
-function configFromEnv(): DefiRadarConfig | null {
-  const ethRpc = process.env.ETH_RPC_URL;
-  const arbRpc = process.env.ARB_RPC_URL;
-  const baseRpc = process.env.BASE_RPC_URL;
-
-  if (!ethRpc && !arbRpc && !baseRpc) return null;
-
-  const chains: Record<string, { rpcUrl: string }> = {};
-  if (ethRpc) chains.ethereum = { rpcUrl: ethRpc };
-  if (arbRpc) chains.arbitrum = { rpcUrl: arbRpc };
-  if (baseRpc) chains.base = { rpcUrl: baseRpc };
-
-  const raw: Record<string, unknown> = { chains };
-
+export function loadConfig(): DefiRadarConfig {
+  // Check env for CoinGecko key
   if (process.env.COINGECKO_API_KEY) {
-    raw.coingecko = { apiKey: process.env.COINGECKO_API_KEY };
+    return ConfigSchema.parse({
+      coingecko: { apiKey: process.env.COINGECKO_API_KEY },
+    });
   }
 
-  const result = ConfigSchema.safeParse(raw);
-  if (!result.success) return null;
-
-  return result.data;
-}
-
-export function loadConfig(): DefiRadarConfig {
-  // 1. Prefer environment variables (CI-friendly)
-  const envConfig = configFromEnv();
-  if (envConfig) return envConfig;
-
-  // 2. Try config file
   const configPath = getConfigPath();
 
   if (existsSync(configPath)) {
@@ -64,6 +38,6 @@ export function loadConfig(): DefiRadarConfig {
     return result.data;
   }
 
-  // 3. Fall back to defaults (public RPCs, no API keys)
+  // No config needed — all APIs are free
   return ConfigSchema.parse({});
 }

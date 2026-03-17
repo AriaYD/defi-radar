@@ -1,44 +1,27 @@
 import { describe, it, expect } from 'vitest';
 import { t } from '../report/i18n.js';
 
-describe('daily-report formatting', () => {
-  it('all i18n keys return non-empty strings for both locales', () => {
+describe('daily-report i18n coverage', () => {
+  it('all report section keys return non-empty strings', () => {
     const keys: Array<Parameters<typeof t>[0]> = [
       'reportTitle',
       'generatedAt',
-      'chains',
-      'sectionExchangeFlows',
-      'sectionStablecoin',
-      'sectionWhale',
+      'sectionMarketOverview',
+      'sectionTvlRankings',
+      'sectionStablecoinSupply',
+      'sectionDexVolume',
       'sectionMarketSignals',
       'sectionSuggestions',
-      'cexFlows',
-      'dexFlows',
-      'totalInflow',
-      'totalOutflow',
-      'netInflow',
-      'netOutflow',
-      'noExchangeData',
-      'stablecoinBullish',
-      'stablecoinBearish',
-      'stablecoinNeutral',
+      'totalMarketCap',
+      'totalVolume',
+      'change24h',
+      'tvlGainers',
+      'tvlLosers',
+      'noTvlData',
+      'supplyChange1d',
+      'supplyChange7d',
       'noStablecoinData',
-      'whaleToExchange',
-      'whaleFromExchange',
-      'whaleTransfer',
-      'noWhaleData',
-      'bullish',
-      'bearish',
-      'neutral',
-      'info',
-      'notable',
-      'significant',
-      'suggCexInflow',
-      'suggCexOutflow',
-      'suggStableInflow',
-      'suggStableOutflow',
-      'suggWhaleAlert',
-      'suggAllCalm',
+      'noDexData',
       'disclaimer',
     ];
 
@@ -46,12 +29,5 @@ describe('daily-report formatting', () => {
       expect(t(key, 'en').length).toBeGreaterThan(0);
       expect(t(key, 'zh').length).toBeGreaterThan(0);
     }
-  });
-
-  it('suggestion texts are distinct between locales', () => {
-    expect(t('suggCexInflow', 'en')).not.toBe(t('suggCexInflow', 'zh'));
-    expect(t('suggCexOutflow', 'en')).not.toBe(t('suggCexOutflow', 'zh'));
-    expect(t('suggWhaleAlert', 'en')).not.toBe(t('suggWhaleAlert', 'zh'));
-    expect(t('suggAllCalm', 'en')).not.toBe(t('suggAllCalm', 'zh'));
   });
 });
