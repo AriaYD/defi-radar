@@ -2,45 +2,47 @@ name: Daily DeFi Email + RSS Report
 
 on:
   schedule:
-    # 默认 UTC 00:00 = 北京时间 08:00
+    # 08:00 Beijing time = 00:00 UTC
     - cron: '0 0 * * *'
   workflow_dispatch:
 
 permissions:
   contents: write
-  issues: write
 
 jobs:
-  report:
+  email-rss-report:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
     env:
       COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+
       EMAIL_SERVER: ${{ vars.EMAIL_SERVER }}
       EMAIL_SERVER_PORT: ${{ vars.EMAIL_SERVER_PORT }}
-      REPORT_TIMEZONE: ${{ vars.REPORT_TIMEZONE }}
+      EMAIL_SUBJECT_PREFIX: ${{ vars.EMAIL_SUBJECT_PREFIX }}
+
       RSS_TITLE: ${{ vars.RSS_TITLE }}
       RSS_DESCRIPTION: ${{ vars.RSS_DESCRIPTION }}
       RSS_LINK: ${{ vars.RSS_LINK }}
       RSS_SELF_LINK: ${{ vars.RSS_SELF_LINK }}
-      EMAIL_SUBJECT_PREFIX: ${{ vars.EMAIL_SUBJECT_PREFIX }}
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: '20'
+          cache: 'pnpm'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 9
+          run_install: false
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -51,28 +53,78 @@ jobs:
       - name: Generate markdown report
         run: node dist/cli.js report --stdout > report.md 2> logs.txt
 
-      - name: Show debug logs
+      - name: Show logs and preview
         if: always()
         run: |
-          echo "=== Logs ==="
+          echo "=== stderr logs ==="
           cat logs.txt || true
           echo ""
-          echo "=== Report preview ==="
-          head -40 report.md || true
+          echo "=== report preview ==="
+          head -100 report.md || true
 
       - name: Verify report exists
-        run: test -s report.md
+        run: |
+          if [ ! -s report.md ]; then
+            echo "report.md was not generated or is empty"
+            exit 1
+          fi
 
-      - name: Create RSS XML
-        run: node scripts/generate-rss.mjs
+      - name: Generate RSS XML
+        shell: bash
+        run: |
+          mkdir -p docs
+          node <<'EOF'
+          const fs = require('fs');
 
-      - name: Ensure docs directory
-        run: mkdir -p docs
+          const report = fs.readFileSync('report.md', 'utf8').trim();
+          const now = new Date();
+          const iso = now.toISOString();
+          const pubDate = now.toUTCString();
 
-      - name: Move RSS feed into docs
-        run: mv rss.xml docs/rss.xml
+          const title = process.env.RSS_TITLE || 'DeFi Daily News RSS';
+          const description = process.env.RSS_DESCRIPTION || 'Automated daily DeFi report feed';
+          const siteLink = process.env.RSS_LINK || 'https://github.com/AriaYD/defi-radar';
+          const selfLink = process.env.RSS_SELF_LINK || 'https://raw.githubusercontent.com/AriaYD/defi-radar/main/docs/rss.xml';
 
-      - name: Commit RSS update
+          const itemTitle = `DeFi Daily Report - ${iso.slice(0, 10)}`;
+          const itemLink = siteLink;
+          const itemGuid = `${siteLink}#${iso.slice(0, 10)}`;
+
+          function escapeXml(str) {
+            return String(str)
+              .replaceAll('&', '&amp;')
+              .replaceAll('<', '&lt;')
+              .replaceAll('>', '&gt;')
+              .replaceAll('"', '&quot;')
+              .replaceAll("'", '&apos;');
+          }
+
+          const xml = `<?xml version="1.0" encoding="UTF-8"?>
+          <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+            <channel>
+              <title>${escapeXml(title)}</title>
+              <link>${escapeXml(siteLink)}</link>
+              <description>${escapeXml(description)}</description>
+              <language>en-us</language>
+              <lastBuildDate>${pubDate}</lastBuildDate>
+              <atom:link href="${escapeXml(selfLink)}" rel="self" type="application/rss+xml" />
+              <item>
+                <title>${escapeXml(itemTitle)}</title>
+                <link>${escapeXml(itemLink)}</link>
+                <guid>${escapeXml(itemGuid)}</guid>
+                <pubDate>${pubDate}</pubDate>
+                <description><![CDATA[<pre>${report}</pre>]]></description>
+              </item>
+            </channel>
+          </rss>
+          `;
+
+          fs.writeFileSync('docs/rss.xml', xml);
+          console.log('docs/rss.xml generated');
+          EOF
+
+      - name: Commit and push RSS feed
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -83,16 +135,6 @@ jobs:
             git commit -m "chore: update daily RSS feed"
             git push
           fi
-
-      - name: Create GitHub issue
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          DATE=$(date -u +%Y-%m-%d)
-          gh issue create \
-            --title "DeFi Daily Report — ${DATE}" \
-            --body-file report.md \
-            --label "daily-report"
 
       - name: Send email
         if: ${{ secrets.EMAIL_USERNAME != '' && secrets.EMAIL_PASSWORD != '' && secrets.EMAIL_TO != '' && vars.EMAIL_SERVER != '' && vars.EMAIL_SERVER_PORT != '' }}
@@ -106,7 +148,7 @@ jobs:
           to: ${{ secrets.EMAIL_TO }}
           from: ${{ secrets.EMAIL_USERNAME }}
           body: |
-            Attached is today's DeFi report.
+            Attached is today's DeFi daily report.
 
             RSS feed:
             ${{ vars.RSS_SELF_LINK }}
