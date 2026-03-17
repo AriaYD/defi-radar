@@ -1,74 +1,21 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { ConfigSchema } from '../types.js';
 import { loadConfig } from '../config.js';
 
 describe('ConfigSchema', () => {
-  it('validates a minimal empty config', () => {
+  it('validates empty config', () => {
     const result = ConfigSchema.safeParse({});
     expect(result.success).toBe(true);
   });
 
-  it('validates config with chains', () => {
-    const config = {
-      chains: {
-        ethereum: { rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/key' },
-      },
-    };
-    const result = ConfigSchema.safeParse(config);
+  it('accepts coingecko key', () => {
+    const result = ConfigSchema.safeParse({ coingecko: { apiKey: 'test' } });
     expect(result.success).toBe(true);
   });
 
-  it('rejects invalid chain RPC URL', () => {
-    const config = {
-      chains: {
-        ethereum: { rpcUrl: 'not-a-url' },
-      },
-    };
-    const result = ConfigSchema.safeParse(config);
-    expect(result.success).toBe(false);
-  });
-
-  it('applies default monitoring values', () => {
-    const config = { monitoring: {} };
-    const result = ConfigSchema.parse(config);
-    expect(result.monitoring?.tokens).toEqual(['USDC', 'USDT', 'WETH', 'WBTC', 'DAI']);
-    expect(result.monitoring?.chains).toEqual(['ethereum', 'arbitrum', 'base']);
-    expect(result.monitoring?.whaleThresholdUsd).toBe(100_000);
-  });
-
-  it('accepts full config', () => {
-    const config = {
-      chains: {
-        ethereum: { rpcUrl: 'https://eth-mainnet.g.alchemy.com/v2/key' },
-        arbitrum: { rpcUrl: 'https://arb-mainnet.g.alchemy.com/v2/key' },
-      },
-      coingecko: { apiKey: 'test-key' },
-      monitoring: {
-        tokens: ['WETH', 'USDC'],
-        chains: ['ethereum'],
-        whaleThresholdUsd: 500_000,
-      },
-    };
-    const result = ConfigSchema.safeParse(config);
-    expect(result.success).toBe(true);
-  });
-
-  it('rejects invalid chain name in monitoring', () => {
-    const config = {
-      monitoring: {
-        chains: ['solana'],
-      },
-    };
-    const result = ConfigSchema.safeParse(config);
-    expect(result.success).toBe(false);
-  });
-
-  it('accepts config with coingecko key', () => {
-    const config = {
-      coingecko: { apiKey: 'my-key' },
-    };
-    const result = ConfigSchema.safeParse(config);
-    expect(result.success).toBe(true);
+  it('accepts config without coingecko', () => {
+    const result = ConfigSchema.parse({});
+    expect(result.coingecko).toBeUndefined();
   });
 });
 
@@ -79,35 +26,17 @@ describe('loadConfig from env', () => {
     process.env = originalEnv;
   });
 
-  it('builds config from ETH_RPC_URL env var', () => {
-    process.env = {
-      ...originalEnv,
-      ETH_RPC_URL: 'https://eth-mainnet.g.alchemy.com/v2/test',
-    };
+  it('picks up COINGECKO_API_KEY from env', () => {
+    process.env = { ...originalEnv, COINGECKO_API_KEY: 'cg-test' };
     const config = loadConfig();
-    expect(config.chains?.ethereum?.rpcUrl).toBe('https://eth-mainnet.g.alchemy.com/v2/test');
+    expect(config.coingecko?.apiKey).toBe('cg-test');
   });
 
-  it('includes coingecko key from env', () => {
-    process.env = {
-      ...originalEnv,
-      ETH_RPC_URL: 'https://eth-mainnet.g.alchemy.com/v2/test',
-      COINGECKO_API_KEY: 'cg-test-key',
-    };
+  it('returns empty config when no env or file', () => {
+    process.env = { ...originalEnv };
+    delete process.env.COINGECKO_API_KEY;
+    // loadConfig falls back to empty config if no file exists
     const config = loadConfig();
-    expect(config.coingecko?.apiKey).toBe('cg-test-key');
-  });
-
-  it('includes multiple chain RPCs from env', () => {
-    process.env = {
-      ...originalEnv,
-      ETH_RPC_URL: 'https://eth.example.com',
-      ARB_RPC_URL: 'https://arb.example.com',
-      BASE_RPC_URL: 'https://base.example.com',
-    };
-    const config = loadConfig();
-    expect(config.chains?.ethereum?.rpcUrl).toBe('https://eth.example.com');
-    expect(config.chains?.arbitrum?.rpcUrl).toBe('https://arb.example.com');
-    expect(config.chains?.base?.rpcUrl).toBe('https://base.example.com');
+    expect(config).toBeDefined();
   });
 });

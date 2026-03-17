@@ -9,23 +9,23 @@ const translations = {
     en: 'Generated at',
     zh: '生成时间',
   },
-  chains: {
-    en: 'Monitored Chains',
-    zh: '监控链',
-  },
 
   // Sections
-  sectionExchangeFlows: {
-    en: 'Exchange Fund Flows',
-    zh: '交易所资金流向',
+  sectionMarketOverview: {
+    en: 'Market Overview',
+    zh: '市场概览',
   },
-  sectionStablecoin: {
-    en: 'Stablecoin Flows',
-    zh: '稳定币流向',
+  sectionTvlRankings: {
+    en: 'Protocol TVL Changes',
+    zh: '协议 TVL 变化',
   },
-  sectionWhale: {
-    en: 'Whale Movements',
-    zh: '巨鲸动向',
+  sectionStablecoinSupply: {
+    en: 'Stablecoin Supply',
+    zh: '稳定币供应量',
+  },
+  sectionDexVolume: {
+    en: 'DEX Trading Volume',
+    zh: 'DEX 交易量',
   },
   sectionMarketSignals: {
     en: 'Market Signals',
@@ -36,70 +36,52 @@ const translations = {
     zh: '投资参考建议',
   },
 
-  // Exchange flows
-  cexFlows: {
-    en: 'CEX Flows',
-    zh: 'CEX 资金流',
+  // Market overview
+  totalMarketCap: {
+    en: 'Total Market Cap',
+    zh: '总市值',
   },
-  dexFlows: {
-    en: 'DEX Flows',
-    zh: 'DEX 资金流',
+  totalVolume: {
+    en: '24h Volume',
+    zh: '24小时交易量',
   },
-  totalInflow: {
-    en: 'Total Inflow',
-    zh: '总流入',
+  change24h: {
+    en: '24h Change',
+    zh: '24小时涨跌',
   },
-  totalOutflow: {
-    en: 'Total Outflow',
-    zh: '总流出',
+
+  // TVL
+  tvlGainers: {
+    en: 'Top Gainers (TVL 24h)',
+    zh: 'TVL 涨幅榜 (24h)',
   },
-  netInflow: {
-    en: 'Net Inflow',
-    zh: '净流入',
+  tvlLosers: {
+    en: 'Top Losers (TVL 24h)',
+    zh: 'TVL 跌幅榜 (24h)',
   },
-  netOutflow: {
-    en: 'Net Outflow',
-    zh: '净流出',
-  },
-  noExchangeData: {
-    en: 'No exchange flow data available.',
-    zh: '暂无交易所资金流数据。',
+  noTvlData: {
+    en: 'No TVL data available.',
+    zh: '暂无 TVL 数据。',
   },
 
   // Stablecoin
-  stablecoinBullish: {
-    en: 'Stablecoins flowing into exchanges — potential buying demand',
-    zh: '稳定币流入交易所——潜在买入需求',
+  supplyChange1d: {
+    en: '1d Change',
+    zh: '日变化',
   },
-  stablecoinBearish: {
-    en: 'Stablecoins flowing out of exchanges — reduced trading interest',
-    zh: '稳定币流出交易所——交易意愿降低',
-  },
-  stablecoinNeutral: {
-    en: 'Stablecoin flows neutral — no clear directional signal',
-    zh: '稳定币流向中性——无明显方向信号',
+  supplyChange7d: {
+    en: '7d Change',
+    zh: '周变化',
   },
   noStablecoinData: {
-    en: 'No stablecoin flow data available.',
-    zh: '暂无稳定币流向数据。',
+    en: 'No stablecoin data available.',
+    zh: '暂无稳定币数据。',
   },
 
-  // Whale
-  whaleToExchange: {
-    en: 'Whale deposit to exchange (potential sell pressure)',
-    zh: '巨鲸向交易所充值（潜在抛压）',
-  },
-  whaleFromExchange: {
-    en: 'Whale withdrawal from exchange (accumulation signal)',
-    zh: '巨鲸从交易所提现（囤币信号）',
-  },
-  whaleTransfer: {
-    en: 'Large whale-to-whale transfer',
-    zh: '巨鲸间大额转账',
-  },
-  noWhaleData: {
-    en: 'No whale movements detected.',
-    zh: '未检测到巨鲸异动。',
+  // DEX
+  noDexData: {
+    en: 'No DEX volume data available.',
+    zh: '暂无 DEX 交易量数据。',
   },
 
   // Signals
@@ -129,35 +111,43 @@ const translations = {
   },
 
   // Suggestions
-  suggCexInflow: {
-    en: 'Significant CEX inflows detected — watch for potential sell-off',
-    zh: 'CEX 出现明显资金流入——注意潜在抛压',
+  suggPriceDrop: {
+    en: 'Significant price decline detected — exercise caution, consider waiting for stabilization',
+    zh: '检测到价格大幅下跌——建议谨慎操作，等待企稳信号',
   },
-  suggCexOutflow: {
-    en: 'Net CEX outflows suggest accumulation — market participants withdrawing to self-custody',
-    zh: 'CEX 净流出显示囤币趋势——市场参与者提现至自托管',
+  suggPriceRise: {
+    en: 'Strong upward momentum — monitor for overheating signals and potential corrections',
+    zh: '价格上行动能强劲——关注过热信号及潜在回调风险',
   },
-  suggStableInflow: {
-    en: 'Stablecoins moving to exchanges — dry powder being deployed, watch for upward price action',
-    zh: '稳定币正流入交易所——资金蓄势待发，关注价格上行',
+  suggTvlDrop: {
+    en: 'DeFi TVL declining — funds leaving protocols, risk-off sentiment',
+    zh: 'DeFi TVL 下降——资金流出协议，避险情绪升温',
   },
-  suggStableOutflow: {
-    en: 'Stablecoins leaving exchanges — participants may be de-risking or moving to DeFi yields',
-    zh: '稳定币正流出交易所——参与者可能在降低风险或转向 DeFi 收益',
+  suggTvlRise: {
+    en: 'DeFi TVL growing — capital flowing into protocols, confidence building',
+    zh: 'DeFi TVL 增长——资金流入协议，市场信心增强',
   },
-  suggWhaleAlert: {
-    en: 'Large whale movements detected — monitor for market impact over next 24-48 hours',
-    zh: '检测到巨鲸大额异动——关注未来 24-48 小时市场影响',
+  suggStableSupplyUp: {
+    en: 'Stablecoin supply increasing — new capital entering the crypto market',
+    zh: '稳定币供应量增加——新资金正在进入加密市场',
+  },
+  suggStableSupplyDown: {
+    en: 'Stablecoin supply contracting — capital may be exiting the crypto market',
+    zh: '稳定币供应量收缩——资金可能正在撤出加密市场',
+  },
+  suggDexVolumeSpike: {
+    en: 'DEX volume surging — high trading activity, watch for volatility',
+    zh: 'DEX 交易量激增——交易活跃度高，注意波动风险',
   },
   suggAllCalm: {
-    en: 'On-chain activity is calm — no significant fund movements detected',
-    zh: '链上活动平静——未检测到显著资金异动',
+    en: 'Market conditions stable — no significant signals detected',
+    zh: '市场状况稳定——未检测到显著信号',
   },
 
   // Footer
   disclaimer: {
-    en: 'This report is for informational purposes only and does not constitute financial advice. Always do your own research.',
-    zh: '本报告仅供参考，不构成任何投资建议。请务必自行研究判断。',
+    en: 'This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.',
+    zh: '本报告数据来源于 DeFiLlama 和 CoinGecko 公开 API，仅供参考，不构成任何投资建议。请务必自行研究判断。',
   },
 } as const;
 

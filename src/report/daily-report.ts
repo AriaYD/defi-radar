@@ -1,414 +1,191 @@
-import type { DefiRadarConfig, ChainName, ExchangeFlowResult, StablecoinFlow, WhaleMovement, MarketSignal } from '../types.js';
-import { getClient, KNOWN_TOKENS } from '../chains/index.js';
-import { getExchangeFlows } from '../exchanges/index.js';
-import { getTokenPrices } from '../pricing/coingecko.js';
-import { getExchangeLookup } from '../exchanges/constants.js';
-import { formatUnits, parseAbiItem, type PublicClient } from 'viem';
+import type { DefiRadarConfig, ReportData, MarketSignal } from '../types.js';
+import { getMarketOverview } from '../data/coingecko.js';
+import { getProtocolTvls, getStablecoinSupply, getDexVolumes } from '../data/defillama.js';
 import { type Locale, t } from './i18n.js';
-
-// Focused token sets for daily report — only high-signal tokens on Ethereum
-const REPORT_CHAIN: ChainName = 'ethereum';
-const REPORT_BLOCKS = 500;
-const EXCHANGE_FLOW_TOKENS = ['USDC', 'USDT', 'WETH', 'WBTC'];
-const STABLECOIN_TOKENS = ['USDC', 'USDT'];
-const WHALE_TOKENS = ['WETH', 'WBTC', 'USDC'];
-const TRANSFER_EVENT = parseAbiItem(
-  'event Transfer(address indexed from, address indexed to, uint256 value)',
-);
-const ERC20_DECIMALS_ABI = [
-  { name: 'decimals', type: 'function', stateMutability: 'view', inputs: [], outputs: [{ name: '', type: 'uint8' }] },
-] as const;
-const LOG_CHUNK_SIZE = 10n;
-const CHUNK_DELAY_MS = 200;
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-async function getLogsChunked(
-  client: PublicClient,
-  tokenAddress: `0x${string}`,
-  fromBlock: bigint,
-  toBlock: bigint,
-) {
-  const allLogs: Awaited<ReturnType<typeof client.getLogs<typeof TRANSFER_EVENT>>> = [];
-  let isFirst = true;
-  for (let start = fromBlock; start <= toBlock; start += LOG_CHUNK_SIZE) {
-    if (!isFirst) await sleep(CHUNK_DELAY_MS);
-    isFirst = false;
-    const end = start + LOG_CHUNK_SIZE - 1n > toBlock ? toBlock : start + LOG_CHUNK_SIZE - 1n;
-    const logs = await client.getLogs({
-      event: TRANSFER_EVENT,
-      address: tokenAddress,
-      fromBlock: start,
-      toBlock: end,
-    });
-    allLogs.push(...logs);
-  }
-  return allLogs;
-}
 
 export async function generateDailyReport(
   config: DefiRadarConfig,
   locale: Locale = 'en',
-  _chain?: string,
 ): Promise<string> {
-  const chains: ChainName[] = [REPORT_CHAIN];
-  const whaleThreshold = config.monitoring?.whaleThresholdUsd ?? 100_000;
-
-  // Collect data sequentially to avoid rate limits
-  const exchangeFlows = await collectExchangeFlows(config);
-  const stablecoinFlows = await collectStablecoinFlows(config);
-  const whaleMovements = await collectWhaleMovements(config, whaleThreshold);
-
-  const signals = deriveSignals(exchangeFlows, stablecoinFlows, whaleMovements);
-
-  return formatReport(locale, chains, exchangeFlows, stablecoinFlows, whaleMovements, signals);
+  const data = await collectReportData(config);
+  data.signals = deriveSignals(data);
+  return formatReport(locale, data);
 }
 
-async function collectExchangeFlows(
-  config: DefiRadarConfig,
-): Promise<ExchangeFlowResult[]> {
-  const knownTokens = KNOWN_TOKENS[REPORT_CHAIN] ?? {};
-  const client = getClient(REPORT_CHAIN, config);
-  const results: ExchangeFlowResult[] = [];
+async function collectReportData(config: DefiRadarConfig): Promise<ReportData> {
+  const apiKey = config.coingecko?.apiKey;
 
-  // Scan only focused tokens one by one to control rate
-  for (const symbol of EXCHANGE_FLOW_TOKENS) {
-    const addr = knownTokens[symbol];
-    if (!addr) continue;
+  const [market, tvl, stablecoins, dexVolumes] = await Promise.all([
+    getMarketOverview(apiKey).catch((err) => {
+      console.error(`[market] failed: ${err instanceof Error ? err.message : String(err)}`);
+      return { btcPrice: 0, btcChange24h: 0, ethPrice: 0, ethChange24h: 0, totalMarketCap: 0, marketCapChange24h: 0, totalVolume24h: 0 };
+    }),
+    getProtocolTvls(10).catch((err) => {
+      console.error(`[tvl] failed: ${err instanceof Error ? err.message : String(err)}`);
+      return { gainers: [], losers: [] };
+    }),
+    getStablecoinSupply().catch((err) => {
+      console.error(`[stablecoins] failed: ${err instanceof Error ? err.message : String(err)}`);
+      return [];
+    }),
+    getDexVolumes(10).catch((err) => {
+      console.error(`[dex] failed: ${err instanceof Error ? err.message : String(err)}`);
+      return [];
+    }),
+  ]);
 
-    try {
-      const result = await getExchangeFlows(client, REPORT_CHAIN, {
-        token: addr as `0x${string}`,
-        blocks: REPORT_BLOCKS,
-      });
-      console.error(`[${REPORT_CHAIN}] exchange flow ${symbol}: ${result.flows.length} flows`);
-
-      // Enrich with prices
-      if (result.flows.length > 0) {
-        try {
-          const prices = await getTokenPrices([symbol], config.coingecko?.apiKey);
-          const price = prices[symbol.toUpperCase()] ?? 0;
-          let totalIn = 0;
-          let totalOut = 0;
-          for (const f of result.flows) {
-            f.inflowUsd = parseFloat(f.inflow) * price;
-            f.outflowUsd = parseFloat(f.outflow) * price;
-            totalIn += f.inflowUsd;
-            totalOut += f.outflowUsd;
-          }
-          result.summary = { totalInflowUsd: totalIn, totalOutflowUsd: totalOut, netFlowUsd: totalIn - totalOut };
-        } catch (err) {
-          console.error(`[${REPORT_CHAIN}] price fetch failed for ${symbol}: ${err instanceof Error ? err.message : String(err)}`);
-        }
-      }
-
-      results.push(result);
-    } catch (err) {
-      console.error(`[${REPORT_CHAIN}] exchange flow ${symbol} failed: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  }
-
-  // Merge all per-token results into one ExchangeFlowResult
-  if (results.length > 0) {
-    const merged: ExchangeFlowResult = {
-      chain: REPORT_CHAIN,
-      blockRange: results[0].blockRange,
-      flows: results.flatMap((r) => r.flows),
-      summary: {
-        totalInflowUsd: results.reduce((s, r) => s + r.summary.totalInflowUsd, 0),
-        totalOutflowUsd: results.reduce((s, r) => s + r.summary.totalOutflowUsd, 0),
-        netFlowUsd: results.reduce((s, r) => s + r.summary.netFlowUsd, 0),
-      },
-    };
-    return [merged];
-  }
-  return [];
+  return {
+    market,
+    topTvlGainers: tvl.gainers,
+    topTvlLosers: tvl.losers,
+    stablecoins,
+    dexVolumes,
+    signals: [],
+  };
 }
 
-async function collectStablecoinFlows(
-  config: DefiRadarConfig,
-): Promise<StablecoinFlow[]> {
-  const knownTokens = KNOWN_TOKENS[REPORT_CHAIN] ?? {};
-  const client = getClient(REPORT_CHAIN, config);
-  const results: StablecoinFlow[] = [];
-
-  for (const symbol of STABLECOIN_TOKENS) {
-    const addr = knownTokens[symbol];
-    if (!addr) continue;
-
-    try {
-      const flowResult = await getExchangeFlows(client, REPORT_CHAIN, {
-        token: addr as `0x${string}`,
-        blocks: REPORT_BLOCKS,
-      });
-
-      let totalInflow = 0;
-      let totalOutflow = 0;
-      for (const f of flowResult.flows) {
-        totalInflow += parseFloat(f.inflow);
-        totalOutflow += parseFloat(f.outflow);
-      }
-      const netFlow = totalInflow - totalOutflow;
-      console.error(`[${REPORT_CHAIN}] stablecoin ${symbol}: net flow $${netFlow.toFixed(0)}`);
-      const signal: StablecoinFlow['signal'] =
-        netFlow > 10_000 ? 'bullish' : netFlow < -10_000 ? 'bearish' : 'neutral';
-
-      results.push({
-        token: symbol,
-        chain: REPORT_CHAIN,
-        netMintBurn: '0',
-        exchangeNetFlow: netFlow.toFixed(2),
-        netMintBurnUsd: 0,
-        exchangeNetFlowUsd: netFlow,
-        signal,
-      });
-    } catch (err) {
-      console.error(`[${REPORT_CHAIN}] stablecoin ${symbol} failed: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  }
-  return results;
-}
-
-async function collectWhaleMovements(
-  config: DefiRadarConfig,
-  thresholdUsd: number,
-): Promise<WhaleMovement[]> {
-  let prices: Record<string, number> = {};
-  try {
-    prices = await getTokenPrices(WHALE_TOKENS, config.coingecko?.apiKey);
-    console.error(`[whale] prices: ${JSON.stringify(prices)}`);
-  } catch (err) {
-    console.error(`[whale] price fetch failed: ${err instanceof Error ? err.message : String(err)}`);
-    return [];
-  }
-
-  const client = getClient(REPORT_CHAIN, config);
-  const exchangeLookup = getExchangeLookup(REPORT_CHAIN);
-  const knownTokens = KNOWN_TOKENS[REPORT_CHAIN] ?? {};
-  const movements: WhaleMovement[] = [];
-
-  for (const symbol of WHALE_TOKENS) {
-    const tokenAddress = knownTokens[symbol];
-    if (!tokenAddress) continue;
-
-    const price = prices[symbol.toUpperCase()] ?? 0;
-    if (price === 0) continue;
-
-    try {
-      const latestBlock = await client.getBlockNumber();
-      const fromBlock = latestBlock - BigInt(REPORT_BLOCKS);
-
-      let decimals: number;
-      try {
-        decimals = await client.readContract({
-          address: tokenAddress as `0x${string}`,
-          abi: ERC20_DECIMALS_ABI,
-          functionName: 'decimals',
-        });
-      } catch (err) {
-        console.error(`[${REPORT_CHAIN}] whale decimals failed for ${symbol}: ${err instanceof Error ? err.message : String(err)}`);
-        continue;
-      }
-
-      const minTokenAmount = thresholdUsd / price;
-      const logs = await getLogsChunked(client, tokenAddress as `0x${string}`, fromBlock, latestBlock);
-      console.error(`[${REPORT_CHAIN}] whale ${symbol}: ${logs.length} logs in ${REPORT_BLOCKS} blocks`);
-
-      for (const log of logs) {
-        const from = log.args.from;
-        const to = log.args.to;
-        const value = log.args.value;
-        if (!from || !to || value === undefined) continue;
-
-        const amount = parseFloat(formatUnits(value, decimals));
-        if (amount < minTokenAmount) continue;
-
-        const fromExchange = exchangeLookup.get(from.toLowerCase());
-        const toExchange = exchangeLookup.get(to.toLowerCase());
-
-        let direction: WhaleMovement['direction'];
-        if (toExchange && toExchange.type === 'cex') {
-          direction = 'to_exchange';
-        } else if (fromExchange && fromExchange.type === 'cex') {
-          direction = 'from_exchange';
-        } else {
-          direction = 'whale_transfer';
-        }
-
-        const shortenAddr = (addr: string) => `${addr.slice(0, 6)}...${addr.slice(-4)}`;
-
-        movements.push({
-          chain: REPORT_CHAIN,
-          token: symbol,
-          from: fromExchange ? `${fromExchange.exchange} (${shortenAddr(from)})` : shortenAddr(from),
-          to: toExchange ? `${toExchange.exchange} (${shortenAddr(to)})` : shortenAddr(to),
-          amount: amount.toFixed(4),
-          amountUsd: amount * price,
-          txHash: log.transactionHash ?? '',
-          direction,
-        });
-      }
-    } catch (err) {
-      console.error(`[${REPORT_CHAIN}] whale ${symbol} failed: ${err instanceof Error ? err.message : String(err)}`);
-    }
-  }
-
-  movements.sort((a, b) => b.amountUsd - a.amountUsd);
-  return movements;
-}
-
-function deriveSignals(
-  exchangeFlows: ExchangeFlowResult[],
-  stablecoinFlows: StablecoinFlow[],
-  whaleMovements: WhaleMovement[],
-): MarketSignal[] {
+function deriveSignals(data: ReportData): MarketSignal[] {
   const signals: MarketSignal[] = [];
 
-  // Exchange flow signals
-  for (const result of exchangeFlows) {
-    const cexFlows = result.flows.filter((f) => f.type === 'cex');
-    const totalCexIn = cexFlows.reduce((s, f) => s + (f.inflowUsd ?? 0), 0);
-    const totalCexOut = cexFlows.reduce((s, f) => s + (f.outflowUsd ?? 0), 0);
-    const netCex = totalCexIn - totalCexOut;
-
-    if (Math.abs(netCex) > 1_000_000) {
-      signals.push({
-        type: 'exchange_flow',
-        severity: Math.abs(netCex) > 10_000_000 ? 'significant' : 'notable',
-        signal: netCex > 0 ? 'bearish' : 'bullish',
-        message: netCex > 0
-          ? `$${(netCex / 1e6).toFixed(1)}M net inflow to CEX on ${result.chain} — sell pressure`
-          : `$${(Math.abs(netCex) / 1e6).toFixed(1)}M net outflow from CEX on ${result.chain} — accumulation`,
-      });
-    }
+  // Price signals
+  if (data.market.btcChange24h < -5 || data.market.ethChange24h < -5) {
+    signals.push({
+      type: 'price',
+      severity: data.market.btcChange24h < -10 ? 'significant' : 'notable',
+      signal: 'bearish',
+      message: `BTC ${data.market.btcChange24h.toFixed(1)}%, ETH ${data.market.ethChange24h.toFixed(1)}% in 24h`,
+    });
+  } else if (data.market.btcChange24h > 5 || data.market.ethChange24h > 5) {
+    signals.push({
+      type: 'price',
+      severity: data.market.btcChange24h > 10 ? 'significant' : 'notable',
+      signal: 'bullish',
+      message: `BTC +${data.market.btcChange24h.toFixed(1)}%, ETH +${data.market.ethChange24h.toFixed(1)}% in 24h`,
+    });
   }
 
-  // Stablecoin signals
-  const totalStableNet = stablecoinFlows.reduce((s, f) => s + f.exchangeNetFlowUsd, 0);
-  if (Math.abs(totalStableNet) > 100_000) {
+  // TVL signals
+  const avgTvlChange = data.topTvlGainers.length > 0
+    ? (data.topTvlGainers.reduce((s, p) => s + p.tvlChange1d, 0) +
+       data.topTvlLosers.reduce((s, p) => s + p.tvlChange1d, 0)) /
+      (data.topTvlGainers.length + data.topTvlLosers.length)
+    : 0;
+
+  if (avgTvlChange < -3) {
+    signals.push({
+      type: 'tvl',
+      severity: avgTvlChange < -10 ? 'significant' : 'notable',
+      signal: 'bearish',
+      message: `Average protocol TVL change: ${avgTvlChange.toFixed(1)}%`,
+    });
+  } else if (avgTvlChange > 3) {
+    signals.push({
+      type: 'tvl',
+      severity: avgTvlChange > 10 ? 'significant' : 'notable',
+      signal: 'bullish',
+      message: `Average protocol TVL change: +${avgTvlChange.toFixed(1)}%`,
+    });
+  }
+
+  // Stablecoin supply signals
+  const totalSupplyChange = data.stablecoins.reduce((s, c) => s + c.supplyChange1d, 0);
+  if (Math.abs(totalSupplyChange) > 0.5) {
     signals.push({
       type: 'stablecoin',
-      severity: Math.abs(totalStableNet) > 1_000_000 ? 'significant' : 'notable',
-      signal: totalStableNet > 0 ? 'bullish' : 'bearish',
-      message: totalStableNet > 0
-        ? `$${(totalStableNet / 1e6).toFixed(1)}M stablecoins entered exchanges — buying power`
-        : `$${(Math.abs(totalStableNet) / 1e6).toFixed(1)}M stablecoins left exchanges — reduced demand`,
+      severity: Math.abs(totalSupplyChange) > 2 ? 'significant' : 'notable',
+      signal: totalSupplyChange > 0 ? 'bullish' : 'bearish',
+      message: `Stablecoin supply ${totalSupplyChange > 0 ? '+' : ''}${totalSupplyChange.toFixed(2)}% (1d)`,
     });
   }
 
-  // Whale signals
-  const toExchangeUsd = whaleMovements
-    .filter((m) => m.direction === 'to_exchange')
-    .reduce((s, m) => s + m.amountUsd, 0);
-  const fromExchangeUsd = whaleMovements
-    .filter((m) => m.direction === 'from_exchange')
-    .reduce((s, m) => s + m.amountUsd, 0);
-
-  if (toExchangeUsd > 500_000) {
+  // DEX volume signals
+  const topDex = data.dexVolumes[0];
+  if (topDex && topDex.volumeChange1d > 50) {
     signals.push({
-      type: 'whale',
-      severity: toExchangeUsd > 5_000_000 ? 'significant' : 'notable',
-      signal: 'bearish',
-      message: `$${(toExchangeUsd / 1e6).toFixed(1)}M whale deposits to exchanges`,
-    });
-  }
-  if (fromExchangeUsd > 500_000) {
-    signals.push({
-      type: 'whale',
-      severity: fromExchangeUsd > 5_000_000 ? 'significant' : 'notable',
-      signal: 'bullish',
-      message: `$${(fromExchangeUsd / 1e6).toFixed(1)}M whale withdrawals from exchanges`,
+      type: 'dex_volume',
+      severity: topDex.volumeChange1d > 100 ? 'significant' : 'notable',
+      signal: 'neutral',
+      message: `${topDex.name} volume +${topDex.volumeChange1d.toFixed(0)}% in 24h`,
     });
   }
 
   return signals;
 }
 
-function formatReport(
-  locale: Locale,
-  chains: ChainName[],
-  exchangeFlows: ExchangeFlowResult[],
-  stablecoinFlows: StablecoinFlow[],
-  whaleMovements: WhaleMovement[],
-  signals: MarketSignal[],
-): string {
+function formatReport(locale: Locale, data: ReportData): string {
   const lines: string[] = [];
   const date = new Date().toISOString().split('T')[0];
 
   // Header
   lines.push(`# ${t('reportTitle', locale)} — ${date}`);
   lines.push('');
-  lines.push(`**${t('chains', locale)}:** ${chains.join(', ')}`);
   lines.push(`**${t('generatedAt', locale)}:** ${new Date().toISOString()}`);
   lines.push('');
 
-  // Exchange Flows
-  lines.push(`## ${t('sectionExchangeFlows', locale)}`);
+  // Market Overview
+  lines.push(`## ${t('sectionMarketOverview', locale)}`);
   lines.push('');
-  if (exchangeFlows.length === 0) {
-    lines.push(t('noExchangeData', locale));
+  lines.push(`| | Price | ${t('change24h', locale)} |`);
+  lines.push('|---|---:|---:|');
+  lines.push(`| BTC | $${formatNum(data.market.btcPrice)} | ${formatPct(data.market.btcChange24h)} |`);
+  lines.push(`| ETH | $${formatNum(data.market.ethPrice)} | ${formatPct(data.market.ethChange24h)} |`);
+  lines.push('');
+  lines.push(`**${t('totalMarketCap', locale)}:** $${formatBig(data.market.totalMarketCap)} (${formatPct(data.market.marketCapChange24h)})`);
+  lines.push(`**${t('totalVolume', locale)}:** $${formatBig(data.market.totalVolume24h)}`);
+  lines.push('');
+
+  // Protocol TVL
+  lines.push(`## ${t('sectionTvlRankings', locale)}`);
+  lines.push('');
+  if (data.topTvlGainers.length === 0 && data.topTvlLosers.length === 0) {
+    lines.push(t('noTvlData', locale));
   } else {
-    for (const result of exchangeFlows) {
-      lines.push(`### ${result.chain.toUpperCase()}`);
-      const cexFlows = result.flows.filter((f) => f.type === 'cex');
-      const dexFlows = result.flows.filter((f) => f.type === 'dex');
-
-      if (cexFlows.length > 0) {
-        lines.push(`**${t('cexFlows', locale)}:**`);
-        for (const f of cexFlows) {
-          const inUsd = f.inflowUsd ? ` ($${formatUsd(f.inflowUsd)})` : '';
-          const outUsd = f.outflowUsd ? ` ($${formatUsd(f.outflowUsd)})` : '';
-          lines.push(`- ${f.exchange} | ${f.token}: In ${f.inflow}${inUsd} / Out ${f.outflow}${outUsd}`);
-        }
-        lines.push('');
+    if (data.topTvlGainers.length > 0) {
+      lines.push(`### ${t('tvlGainers', locale)}`);
+      lines.push('');
+      lines.push(`| Protocol | TVL | 1d | 7d | Category |`);
+      lines.push('|---|---:|---:|---:|---|');
+      for (const p of data.topTvlGainers) {
+        lines.push(`| ${p.name} | $${formatBig(p.tvl)} | ${formatPct(p.tvlChange1d)} | ${formatPct(p.tvlChange7d)} | ${p.category} |`);
       }
-      if (dexFlows.length > 0) {
-        lines.push(`**${t('dexFlows', locale)}:**`);
-        for (const f of dexFlows) {
-          lines.push(`- ${f.exchange} | ${f.token}: In ${f.inflow} / Out ${f.outflow}`);
-        }
-        lines.push('');
+      lines.push('');
+    }
+    if (data.topTvlLosers.length > 0) {
+      lines.push(`### ${t('tvlLosers', locale)}`);
+      lines.push('');
+      lines.push(`| Protocol | TVL | 1d | 7d | Category |`);
+      lines.push('|---|---:|---:|---:|---|');
+      for (const p of data.topTvlLosers) {
+        lines.push(`| ${p.name} | $${formatBig(p.tvl)} | ${formatPct(p.tvlChange1d)} | ${formatPct(p.tvlChange7d)} | ${p.category} |`);
       }
-
-      if (result.summary.totalInflowUsd > 0 || result.summary.totalOutflowUsd > 0) {
-        const isNet = result.summary.netFlowUsd >= 0;
-        lines.push(`> ${t('totalInflow', locale)}: $${formatUsd(result.summary.totalInflowUsd)} | ${t('totalOutflow', locale)}: $${formatUsd(result.summary.totalOutflowUsd)} | ${isNet ? t('netInflow', locale) : t('netOutflow', locale)}: $${formatUsd(Math.abs(result.summary.netFlowUsd))}`);
-        lines.push('');
-      }
+      lines.push('');
     }
   }
 
-  // Stablecoin Flows
-  lines.push(`## ${t('sectionStablecoin', locale)}`);
+  // Stablecoin Supply
+  lines.push(`## ${t('sectionStablecoinSupply', locale)}`);
   lines.push('');
-  if (stablecoinFlows.length === 0) {
+  if (data.stablecoins.length === 0) {
     lines.push(t('noStablecoinData', locale));
   } else {
-    for (const f of stablecoinFlows) {
-      const direction = f.exchangeNetFlowUsd >= 0 ? t('netInflow', locale) : t('netOutflow', locale);
-      const signalLabel = t(f.signal, locale);
-      lines.push(`- **${f.chain.toUpperCase()}** ${f.token}: ${direction} $${formatUsd(Math.abs(f.exchangeNetFlowUsd))} [${signalLabel}]`);
+    lines.push(`| Stablecoin | Supply | ${t('supplyChange1d', locale)} | ${t('supplyChange7d', locale)} |`);
+    lines.push('|---|---:|---:|---:|');
+    for (const s of data.stablecoins) {
+      lines.push(`| ${s.symbol} (${s.name}) | $${formatBig(s.totalSupply)} | ${formatPct(s.supplyChange1d)} | ${formatPct(s.supplyChange7d)} |`);
     }
     lines.push('');
   }
 
-  // Whale Movements
-  lines.push(`## ${t('sectionWhale', locale)}`);
+  // DEX Volume
+  lines.push(`## ${t('sectionDexVolume', locale)}`);
   lines.push('');
-  if (whaleMovements.length === 0) {
-    lines.push(t('noWhaleData', locale));
+  if (data.dexVolumes.length === 0) {
+    lines.push(t('noDexData', locale));
   } else {
-    const top = whaleMovements.slice(0, 10);
-    for (const m of top) {
-      let label: string;
-      if (m.direction === 'to_exchange') label = t('whaleToExchange', locale);
-      else if (m.direction === 'from_exchange') label = t('whaleFromExchange', locale);
-      else label = t('whaleTransfer', locale);
-
-      lines.push(`- **${m.chain.toUpperCase()}** ${m.token} $${formatUsd(m.amountUsd)} — ${label}`);
-      lines.push(`  ${m.from} → ${m.to}`);
-    }
-    if (whaleMovements.length > 10) {
-      lines.push(`- ... ${locale === 'zh' ? `还有 ${whaleMovements.length - 10} 笔` : `and ${whaleMovements.length - 10} more`}`);
+    lines.push(`| DEX | 24h Volume | ${t('change24h', locale)} |`);
+    lines.push('|---|---:|---:|');
+    for (const d of data.dexVolumes) {
+      lines.push(`| ${d.name} | $${formatBig(d.volume24h)} | ${formatPct(d.volumeChange1d)} |`);
     }
     lines.push('');
   }
@@ -416,13 +193,11 @@ function formatReport(
   // Market Signals
   lines.push(`## ${t('sectionMarketSignals', locale)}`);
   lines.push('');
-  if (signals.length === 0) {
+  if (data.signals.length === 0) {
     lines.push(t('suggAllCalm', locale));
   } else {
-    for (const s of signals) {
-      const sevLabel = t(s.severity, locale);
-      const sigLabel = t(s.signal, locale);
-      lines.push(`- [${sevLabel}] [${sigLabel}] ${s.message}`);
+    for (const s of data.signals) {
+      lines.push(`- [${t(s.severity, locale)}] [${t(s.signal, locale)}] ${s.message}`);
     }
   }
   lines.push('');
@@ -430,7 +205,7 @@ function formatReport(
   // Suggestions
   lines.push(`## ${t('sectionSuggestions', locale)}`);
   lines.push('');
-  const suggestions = deriveSuggestions(locale, exchangeFlows, stablecoinFlows, whaleMovements);
+  const suggestions = deriveSuggestions(locale, data);
   for (const s of suggestions) {
     lines.push(`- ${s}`);
   }
@@ -443,47 +218,48 @@ function formatReport(
   return lines.join('\n');
 }
 
-function deriveSuggestions(
-  locale: Locale,
-  exchangeFlows: ExchangeFlowResult[],
-  stablecoinFlows: StablecoinFlow[],
-  whaleMovements: WhaleMovement[],
-): string[] {
+function deriveSuggestions(locale: Locale, data: ReportData): string[] {
   const suggestions: string[] = [];
 
-  const totalCexNet = exchangeFlows.reduce((s, r) => {
-    const cex = r.flows.filter((f) => f.type === 'cex');
-    return s + cex.reduce((ss, f) => ss + (f.inflowUsd ?? 0) - (f.outflowUsd ?? 0), 0);
-  }, 0);
-
-  if (totalCexNet > 1_000_000) {
-    suggestions.push(t('suggCexInflow', locale));
-  } else if (totalCexNet < -1_000_000) {
-    suggestions.push(t('suggCexOutflow', locale));
+  if (data.market.btcChange24h < -5 || data.market.ethChange24h < -5) {
+    suggestions.push(t('suggPriceDrop', locale));
+  } else if (data.market.btcChange24h > 5 || data.market.ethChange24h > 5) {
+    suggestions.push(t('suggPriceRise', locale));
   }
 
-  const totalStableNet = stablecoinFlows.reduce((s, f) => s + f.exchangeNetFlowUsd, 0);
-  if (totalStableNet > 100_000) {
-    suggestions.push(t('suggStableInflow', locale));
-  } else if (totalStableNet < -100_000) {
-    suggestions.push(t('suggStableOutflow', locale));
-  }
+  const avgTvl = data.topTvlGainers.length > 0
+    ? (data.topTvlGainers.reduce((s, p) => s + p.tvlChange1d, 0) +
+       data.topTvlLosers.reduce((s, p) => s + p.tvlChange1d, 0)) /
+      (data.topTvlGainers.length + data.topTvlLosers.length)
+    : 0;
+  if (avgTvl < -3) suggestions.push(t('suggTvlDrop', locale));
+  else if (avgTvl > 3) suggestions.push(t('suggTvlRise', locale));
 
-  const whaleToExchange = whaleMovements.filter((m) => m.direction === 'to_exchange').length;
-  const whaleFromExchange = whaleMovements.filter((m) => m.direction === 'from_exchange').length;
-  if (whaleToExchange > 0 || whaleFromExchange > 0) {
-    suggestions.push(t('suggWhaleAlert', locale));
-  }
+  const totalStableChange = data.stablecoins.reduce((s, c) => s + c.supplyChange1d, 0);
+  if (totalStableChange > 0.5) suggestions.push(t('suggStableSupplyUp', locale));
+  else if (totalStableChange < -0.5) suggestions.push(t('suggStableSupplyDown', locale));
 
-  if (suggestions.length === 0) {
-    suggestions.push(t('suggAllCalm', locale));
-  }
+  const topDex = data.dexVolumes[0];
+  if (topDex && topDex.volumeChange1d > 50) suggestions.push(t('suggDexVolumeSpike', locale));
+
+  if (suggestions.length === 0) suggestions.push(t('suggAllCalm', locale));
 
   return suggestions;
 }
 
-function formatUsd(value: number): string {
-  if (value >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M`;
-  if (value >= 1_000) return `${(value / 1_000).toFixed(1)}K`;
-  return value.toFixed(0);
+function formatNum(n: number): string {
+  return n.toLocaleString('en-US', { maximumFractionDigits: 2 });
+}
+
+function formatBig(n: number): string {
+  if (n >= 1e12) return `${(n / 1e12).toFixed(2)}T`;
+  if (n >= 1e9) return `${(n / 1e9).toFixed(2)}B`;
+  if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}K`;
+  return n.toFixed(0);
+}
+
+function formatPct(n: number): string {
+  const sign = n >= 0 ? '+' : '';
+  return `${sign}${n.toFixed(2)}%`;
 }
