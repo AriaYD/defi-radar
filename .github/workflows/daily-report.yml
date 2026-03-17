@@ -2,7 +2,7 @@ name: Daily DeFi Report
 
 on:
   schedule:
-    # 8:00 AM Beijing time (UTC+8) = 0:00 UTC
+    # 8:00 AM Beijing time (UTC+8)
     - cron: '0 0 * * *'
   workflow_dispatch:
 
@@ -10,46 +10,48 @@ permissions:
   issues: write
 
 jobs:
-  generate-report:
+  report:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     env:
       COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: '20'
 
-      - uses: pnpm/action-setup@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
           version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Build
+      - name: Build project
         run: pnpm build
 
       - name: Generate report
         run: node dist/cli.js report --stdout > report.md 2> logs.txt || true
 
-      - name: Show debug logs
-        if: always()
+      - name: Show logs
         run: |
-          echo "=== Logs ==="
+          echo "=== stderr logs ==="
           cat logs.txt || true
           echo ""
-          echo "=== Report preview ==="
-          head -40 report.md || true
+          echo "=== report preview ==="
+          head -100 report.md || true
 
-      - name: Create GitHub issue
+      - name: Create issue
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           DATE=$(date -u +%Y-%m-%d)
           gh issue create \
-            --title "DeFi Daily Report — ${DATE}" \
+            --title "DeFi Daily Report - ${DATE}" \
             --body-file report.md \
             --label "daily-report"
