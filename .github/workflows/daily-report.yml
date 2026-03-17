@@ -37,7 +37,12 @@ jobs:
 
       - name: Generate report
         run: node dist/cli.js report --stdout > report.md 2> logs.txt || true
-
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: defi-report
+          path: report.md
+          
       - name: Show logs
         run: |
           echo "=== stderr logs ==="
