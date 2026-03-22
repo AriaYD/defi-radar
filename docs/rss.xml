@@ -5,8 +5,97 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Sat, 21 Mar 2026 01:13:24 GMT</lastBuildDate>
+<lastBuildDate>Sun, 22 Mar 2026 01:22:28 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-03-22</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-03-22</guid>
+<pubDate>Sun, 22 Mar 2026 01:22:28 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-03-22
+
+**Generated at:** 2026-03-22T01:22:13.543Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $69,025 | -2.26% |
+| ETH | $2,090.21 | -2.96% |
+
+**Total Market Cap:** $2.45T (-1.89%)
+**24h Volume:** $59.52B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| BackedFi | $41.1M | +246.11% | +245.83% | RWA |
+| EGAS swap | $23.2M | +167.60% | +93.57% | Dexs |
+| Frankencoin | $65.1M | +58.43% | -3.66% | CDP |
+| Reservoir Protocol | $190.0M | +18.90% | +39.10% | CDP |
+| Extra Finance Vaults | $11.4M | +17.79% | +18.41% | Onchain Capital Allocator |
+| Dswap | $87.6M | +16.03% | +13.27% | Dexs |
+| Spark Savings | $1.60B | +12.37% | +12.03% | Yield |
+| Enosys AMM V3 | $13.4M | +9.23% | +31.64% | Dexs |
+| Yuzu Money | $70.9M | +7.61% | +12.13% | Yield |
+| Spectra V2 | $39.1M | +7.28% | +34.20% | Yield |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| River Omni-CDP | $88.2M | -29.84% | +3.14% | CeDeFi |
+| DoubleZero Staked SOL | $890.8M | -25.93% | -24.38% | Liquid Staking |
+| Dinari | $10.8M | -17.11% | -0.00% | RWA |
+| SparkDEX V4 | $12.9M | -15.31% | +10.04% | Dexs |
+| Pharaoh V3 | $27.5M | -14.21% | -10.00% | Dexs |
+| Hyperliquid Spot Orderbook | $144.7M | -8.89% | -15.48% | Dexs |
+| Free Protocol | $387.0M | -7.91% | -1.27% | Bridge |
+| Gains Network | $20.3M | -7.70% | -11.16% | Derivatives |
+| AO Bridge | $101.8M | -6.65% | -3.69% | Canonical Bridge |
+| Hyperbeat LST | $13.9M | -6.44% | -13.26% | Liquid Staking |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.17B | +0.03% | +0.12% |
+| USDC (USD Coin) | $79.05B | -0.26% | -0.25% |
+| DAI (Dai) | $4.56B | -0.13% | +0.44% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V3 | $792.9M | +0.00% |
+| PancakeSwap AMM V3 | $681.3M | +0.00% |
+| Uniswap V4 | $372.0M | -28.94% |
+| Raydium AMM | $301.2M | -30.60% |
+| Figure Markets Exchange | $297.3M | -13.77% |
+| Kalshi | $228.4M | +0.00% |
+| BisonFi | $214.8M | +0.00% |
+| HumidiFi | $209.0M | +0.00% |
+| Polymarket | $160.1M | +0.00% |
+| Fluid DEX | $156.7M | -26.87% |
+
+## Market Signals
+
+- [SIGNIFICANT] [BULLISH] Average protocol TVL change: +21.1%
+
+## Investment Considerations
+
+- DeFi TVL growing — capital flowing into protocols, confidence building
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-03-21</title>
@@ -96,7 +185,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-03-20</title>
 <link>https://github.com/AriaYD/defi-radar</link>
