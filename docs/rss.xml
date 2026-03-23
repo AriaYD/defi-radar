@@ -5,8 +5,99 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Sun, 22 Mar 2026 01:22:28 GMT</lastBuildDate>
+<lastBuildDate>Mon, 23 Mar 2026 01:22:54 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-03-23</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-03-23</guid>
+<pubDate>Mon, 23 Mar 2026 01:22:54 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-03-23
+
+**Generated at:** 2026-03-23T01:22:37.257Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $67,968 | -1.58% |
+| ETH | $2,057.62 | -1.61% |
+
+**Total Market Cap:** $2.42T (-1.08%)
+**24h Volume:** $70.75B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Origin ARM | $15.1M | +46.79% | -13.73% | Yield |
+| Brotocol | $13.5M | +25.99% | +25.60% | Bridge Aggregator |
+| Okcoin | $24.5M | +19.43% | +13.99% | CEX |
+| Hyperbeat LST | $16.0M | +15.17% | +0.89% | Liquid Staking |
+| Pharaoh V3 | $31.6M | +14.83% | +2.80% | Dexs |
+| Hyperliquid Spot Orderbook | $162.1M | +12.05% | -6.52% | Dexs |
+| Meteora DLMM | $297.9M | +8.60% | -7.76% | Dexs |
+| GoPlus Locker V3 | $35.4M | +5.22% | +0.88% | Token Locker |
+| Aave Aptos | $26.7M | +4.10% | -6.05% | Lending |
+| Rysk V12 | $64.5M | +3.86% | +24.71% | Options |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Rhea Lend | $43.3M | -43.52% | -43.79% | Lending |
+| Resolv | $84.7M | -39.91% | -41.98% | Basis Trading |
+| Fluid Lending | $710.9M | -35.16% | -33.47% | Lending |
+| Reservoir Protocol | $130.5M | -31.32% | -12.37% | CDP |
+| Seamless Vaults | $15.5M | -27.84% | -35.01% | Onchain Capital Allocator |
+| OKX | $12.96B | -26.84% | -29.21% | CEX |
+| Seamless V2 | $37.8M | -20.73% | -22.85% | Lending |
+| AUTOfinance | $56.9M | -20.23% | -24.86% | Yield |
+| infiniFi | $143.9M | -18.42% | -16.89% | Yield |
+| Hakutora | $23.6M | -13.61% | -2.72% | Risk Curators |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.12B | -0.03% | +0.08% |
+| USDC (USD Coin) | $79.01B | -0.04% | -0.22% |
+| DAI (Dai) | $4.57B | -0.10% | +0.71% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V3 | $800.5M | +223.20% |
+| PancakeSwap AMM V3 | $719.9M | +117.19% |
+| Uniswap V4 | $564.0M | +49.42% |
+| Fluid DEX | $335.6M | +118.12% |
+| Raydium AMM | $267.1M | -17.83% |
+| Curve DEX | $241.9M | +292.89% |
+| Aerodrome Slipstream | $239.3M | +105.55% |
+| Kalshi | $220.4M | +1.44% |
+| PancakeSwap Infinity | $187.6M | +38.26% |
+| HumidiFi | $181.1M | +33.09% |
+
+## Market Signals
+
+- [NOTABLE] [BEARISH] Average protocol TVL change: -6.1%
+- [SIGNIFICANT] [NEUTRAL] Uniswap V3 volume +223% in 24h
+
+## Investment Considerations
+
+- DeFi TVL declining — funds leaving protocols, risk-off sentiment
+- DEX volume surging — high trading activity, watch for volatility
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-03-22</title>
@@ -96,7 +187,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-03-21</title>
 <link>https://github.com/AriaYD/defi-radar</link>
