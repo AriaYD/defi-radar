@@ -5,8 +5,97 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Sat, 04 Apr 2026 01:20:47 GMT</lastBuildDate>
+<lastBuildDate>Sun, 05 Apr 2026 01:43:23 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-04-05</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-04-05</guid>
+<pubDate>Sun, 05 Apr 2026 01:43:23 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-04-05
+
+**Generated at:** 2026-04-05T01:43:07.947Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $67,081 | +0.36% |
+| ETH | $2,057.51 | +0.31% |
+
+**Total Market Cap:** $2.39T (+0.29%)
+**24h Volume:** $47.81B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Manifest Trade | $21.0M | +21.81% | +25.05% | Dexs |
+| SparkDEX V4 | $16.4M | +21.77% | +26.78% | Dexs |
+| Jupiter Lend | $936.3M | +12.03% | -5.94% | Lending |
+| Reservoir Protocol | $169.8M | +8.01% | +8.70% | CDP |
+| Rysk V12 | $45.5M | +7.88% | +3.53% | Options |
+| Solera | $10.2M | +7.19% | -4.09% | Lending |
+| Polymarket | $454.5M | +7.02% | -2.02% | Prediction Market |
+| Jupiter Perpetual Exchange | $692.4M | +6.70% | -16.10% | Derivatives |
+| Linea Bridge | $369.3M | +5.73% | +9.09% | Canonical Bridge |
+| Angstrom | $10.0M | +4.88% | +6.84% | Dexs |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Figure Markets Democratized Prime | $55.1M | -27.32% | +716.02% | RWA Lending |
+| NAVI Lending | $117.1M | -15.17% | -16.47% | Lending |
+| Republic Note | $12.5M | -10.91% | -7.55% | RWA |
+| Uniswap V4 | $625.6M | -10.25% | +2.92% | Dexs |
+| SushiSwap | $41.3M | -8.20% | -6.22% | Dexs |
+| xStocks | $335.1M | -7.73% | -2.89% | RWA |
+| Midas RWA | $214.4M | -7.42% | -0.13% | RWA |
+| Lista DEX | $52.5M | -7.15% | +0.00% | Dexs |
+| LeveX | $10.2M | -6.86% | -5.07% | CEX |
+| BigONE | $35.2M | -6.43% | -5.58% | CEX |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.10B | +0.10% | -0.02% |
+| USDC (USD Coin) | $77.42B | +0.26% | -0.42% |
+| DAI (Dai) | $4.70B | +0.30% | +3.16% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| PancakeSwap AMM V3 | $442.8M | +0.00% |
+| Uniswap V3 | $345.4M | +0.00% |
+| Uniswap V4 | $340.5M | -20.90% |
+| Aerodrome Slipstream | $167.9M | -2.42% |
+| BisonFi | $158.1M | +0.00% |
+| Kalshi | $141.5M | +0.00% |
+| HumidiFi | $133.6M | +0.00% |
+| Tessera V | $129.7M | +0.00% |
+| Polymarket | $120.0M | +0.00% |
+| PancakeSwap Infinity | $114.8M | -20.73% |
+
+## Market Signals
+
+- [NOTABLE] [BULLISH] Stablecoin supply +0.66% (1d)
+
+## Investment Considerations
+
+- Stablecoin supply increasing — new capital entering the crypto market
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-04-04</title>
@@ -96,7 +185,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-04-03</title>
 <link>https://github.com/AriaYD/defi-radar</link>
