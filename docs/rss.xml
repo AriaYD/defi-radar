@@ -5,8 +5,97 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Sun, 05 Apr 2026 01:43:23 GMT</lastBuildDate>
+<lastBuildDate>Mon, 06 Apr 2026 01:30:29 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-04-06</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-04-06</guid>
+<pubDate>Mon, 06 Apr 2026 01:30:29 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-04-06
+
+**Generated at:** 2026-04-06T01:30:14.325Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $68,942 | +2.66% |
+| ETH | $2,117.35 | +2.83% |
+
+**Total Market Cap:** $2.44T (+2.01%)
+**24h Volume:** $62.67B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| NAVI Lending | $138.8M | +18.43% | +0.05% | Lending |
+| cap | $326.9M | +17.97% | +21.75% | Lending |
+| Fragmetric | $12.8M | +17.72% | +19.70% | Liquid Restaking |
+| Tropykus RSK | $10.7M | +17.33% | +4.12% | Lending |
+| Symbiotic | $476.4M | +13.42% | +1.26% | Restaking |
+| Solv Basis Trading | $197.3M | +12.50% | +25.84% | Basis Trading |
+| Jupiter Lend | $943.1M | +12.23% | +9.28% | Lending |
+| River Omni-CDP | $93.7M | +10.99% | +13.12% | CeDeFi |
+| Aerodrome Ignition | $25.3M | +9.10% | +10.71% | Launchpad |
+| Origami Finance | $34.5M | +7.79% | +16.74% | Leveraged Farming |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Anzen V2 | $10.6M | -39.51% | -38.98% | RWA |
+| Bitway | $12.3M | -21.84% | -19.51% | Basis Trading |
+| Manifest Trade | $17.5M | -16.52% | +3.93% | Dexs |
+| marginfi Lending | $39.3M | -12.70% | -26.12% | Lending |
+| Hyperbeat LST | $15.1M | -11.45% | -8.65% | Liquid Staking |
+| Neutral Trade | $19.0M | -11.10% | -59.50% | Onchain Capital Allocator |
+| Strata Markets | $101.1M | -8.49% | -61.23% | Yield |
+| Polymarket | $420.4M | -7.49% | -10.66% | Prediction Market |
+| Katana Pre-Launch | $18.9M | -6.71% | -6.60% | Farm |
+| Vectis Finance | $16.6M | -6.57% | -21.93% | Yield |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.05B | -0.01% | -0.02% |
+| USDC (USD Coin) | $77.46B | -0.03% | -0.24% |
+| DAI (Dai) | $4.70B | +0.18% | +3.14% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V4 | $339.0M | -2.15% |
+| PancakeSwap AMM V3 | $329.0M | +0.00% |
+| Aerodrome Slipstream | $222.5M | +35.55% |
+| Kalshi | $166.7M | +0.00% |
+| Uniswap V3 | $149.8M | +0.00% |
+| Polymarket | $130.3M | +0.00% |
+| PancakeSwap Infinity | $128.2M | +11.64% |
+| Tessera V | $127.8M | +0.00% |
+| Orca DEX | $118.9M | +42.86% |
+| Raydium AMM | $103.1M | +7.72% |
+
+## Market Signals
+
+Market conditions stable — no significant signals detected
+
+## Investment Considerations
+
+- Market conditions stable — no significant signals detected
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-04-05</title>
@@ -96,7 +185,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-04-04</title>
 <link>https://github.com/AriaYD/defi-radar</link>
