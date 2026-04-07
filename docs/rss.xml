@@ -5,8 +5,99 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Mon, 06 Apr 2026 01:30:29 GMT</lastBuildDate>
+<lastBuildDate>Tue, 07 Apr 2026 01:28:31 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-04-07</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-04-07</guid>
+<pubDate>Tue, 07 Apr 2026 01:28:31 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-04-07
+
+**Generated at:** 2026-04-07T01:28:18.155Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $68,774 | -0.24% |
+| ETH | $2,113.93 | -0.16% |
+
+**Total Market Cap:** $2.43T (-0.28%)
+**24h Volume:** $96.52B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Polygon zkEVM Bridge | $157.0M | +44.99% | +38.55% | Canonical Bridge |
+| River Omni-CDP | $123.5M | +43.42% | +47.18% | CeDeFi |
+| CEX.IO | $12.8M | +29.35% | +53.51% | CEX |
+| Kodiak Islands | $51.0M | +26.45% | +23.37% | Liquidity Manager |
+| Ink Bridge | $55.9M | +19.62% | +13.67% | Canonical Bridge |
+| BitMart | $15.4M | +14.26% | -12.44% | CEX |
+| Chainflip AMM | $11.0M | +13.95% | +13.57% | Dexs |
+| Scroll Bridge | $93.3M | +12.86% | +22.37% | Canonical Bridge |
+| Royco V1 | $20.5M | +12.09% | +13.62% | Yield |
+| Rysk V12 | $53.6M | +11.64% | -1.75% | Options |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Resolv | $74.4M | -33.25% | -33.96% | Basis Trading |
+| OpenEden USDO | $45.6M | -30.51% | -31.31% | RWA |
+| Stobox | $15.1M | -28.41% | -28.41% | RWA |
+| Euler DAO | $64.0M | -26.64% | +5.81% | Risk Curators |
+| Maple | $1.56B | -24.88% | -37.21% | Lending |
+| USD AI | $237.2M | -22.95% | -23.79% | RWA Lending |
+| cBridge | $18.1M | -17.70% | -19.57% | Bridge |
+| Fragmetric | $10.5M | -16.23% | -4.03% | Liquid Restaking |
+| Aave Aptos | $17.5M | -13.85% | -29.93% | Lending |
+| Sky Lending | $5.78B | -12.54% | -13.64% | CDP |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.07B | -0.02% | -0.05% |
+| USDC (USD Coin) | $77.77B | +0.41% | +0.17% |
+| DAI (Dai) | $4.72B | +0.30% | +2.92% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V4 | $576.5M | +66.51% |
+| Aerodrome Slipstream | $428.6M | +56.29% |
+| PancakeSwap AMM V3 | $404.5M | +0.00% |
+| Uniswap V3 | $288.0M | +0.00% |
+| Orca DEX | $260.6M | +119.24% |
+| Curve DEX | $217.3M | +457.95% |
+| Kalshi | $209.3M | +0.00% |
+| Fluid DEX | $200.5M | +105.46% |
+| Manifest Trade | $152.2M | +72.80% |
+| Polymarket | $152.1M | +0.00% |
+
+## Market Signals
+
+- [NOTABLE] [BULLISH] Stablecoin supply +0.69% (1d)
+- [NOTABLE] [NEUTRAL] Uniswap V4 volume +67% in 24h
+
+## Investment Considerations
+
+- Stablecoin supply increasing — new capital entering the crypto market
+- DEX volume surging — high trading activity, watch for volatility
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-04-06</title>
@@ -96,7 +187,6 @@ Market conditions stable — no significant signals detected
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-04-05</title>
 <link>https://github.com/AriaYD/defi-radar</link>
