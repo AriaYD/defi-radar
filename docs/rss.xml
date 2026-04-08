@@ -5,8 +5,101 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Tue, 07 Apr 2026 01:28:31 GMT</lastBuildDate>
+<lastBuildDate>Wed, 08 Apr 2026 01:28:51 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-04-08</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-04-08</guid>
+<pubDate>Wed, 08 Apr 2026 01:28:51 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-04-08
+
+**Generated at:** 2026-04-08T01:28:37.990Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $71,539 | +4.06% |
+| ETH | $2,233.9 | +5.70% |
+
+**Total Market Cap:** $2.52T (+4.24%)
+**24h Volume:** $123.49B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Figure Markets Democratized Prime | $47.4M | +375.75% | +396.65% | RWA Lending |
+| XION Finance | $27.4M | +30.32% | +37.76% | Chain |
+| cBridge | $23.3M | +29.08% | +2.89% | Bridge |
+| Echo Bridge | $190.4M | +26.51% | +37.57% | Bridge |
+| Lorenzo enzoBTC | $504.1M | +22.22% | +23.14% | Bridge |
+| Liquid Collective | $716.9M | +22.04% | +23.07% | Liquid Staking |
+| Tropykus RSK | $11.2M | +19.07% | +5.16% | Lending |
+| Strata Markets | $117.4M | +18.98% | -53.08% | Yield |
+| Flipster | $37.3M | +16.02% | +7.58% | CEX |
+| Bitway | $14.3M | +15.76% | -6.32% | Basis Trading |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Mellow Core | $286.6M | -41.29% | -34.45% | Onchain Capital Allocator |
+| River Omni-CDP | $90.6M | -26.61% | -26.02% | CeDeFi |
+| Superstate USTB | $642.5M | -23.75% | +0.88% | RWA |
+| EtherFi Borrowing Market | $162.1M | -22.72% | -17.89% | Lending |
+| Kodiak Islands | $41.5M | -19.11% | -20.21% | Liquidity Manager |
+| Euler DAO | $53.6M | -16.11% | -19.30% | Risk Curators |
+| Vectis Finance | $13.6M | -11.48% | -35.26% | Yield |
+| Scroll Bridge | $83.9M | -10.02% | +4.31% | Canonical Bridge |
+| Brotocol | $10.9M | -9.58% | -1.97% | Bridge Aggregator |
+| Jupiter Lend | $847.1M | -9.51% | -14.61% | Lending |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.56B | +0.25% | +0.21% |
+| USDC (USD Coin) | $77.80B | +0.43% | +0.54% |
+| DAI (Dai) | $4.69B | -0.13% | +1.88% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V3 | $667.2M | +0.00% |
+| Uniswap V4 | $593.1M | +1.15% |
+| PancakeSwap AMM V3 | $578.1M | +0.00% |
+| Aerodrome Slipstream | $527.3M | +27.53% |
+| Orca DEX | $275.4M | +5.69% |
+| Fluid DEX | $253.7M | +29.01% |
+| BisonFi | $243.1M | +0.00% |
+| Kalshi | $179.9M | +0.00% |
+| Tessera V | $179.8M | +0.00% |
+| Raydium AMM | $169.2M | +25.02% |
+
+## Market Signals
+
+- [NOTABLE] [BULLISH] BTC +4.1%, ETH +5.7% in 24h
+- [SIGNIFICANT] [BULLISH] Average protocol TVL change: +19.3%
+- [NOTABLE] [BULLISH] Stablecoin supply +0.55% (1d)
+
+## Investment Considerations
+
+- Strong upward momentum — monitor for overheating signals and potential corrections
+- DeFi TVL growing — capital flowing into protocols, confidence building
+- Stablecoin supply increasing — new capital entering the crypto market
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-04-07</title>
@@ -98,7 +191,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-04-06</title>
 <link>https://github.com/AriaYD/defi-radar</link>
