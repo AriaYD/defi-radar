@@ -5,8 +5,97 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Sun, 12 Apr 2026 01:48:16 GMT</lastBuildDate>
+<lastBuildDate>Mon, 13 Apr 2026 01:53:00 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-04-13</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-04-13</guid>
+<pubDate>Mon, 13 Apr 2026 01:53:00 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-04-13
+
+**Generated at:** 2026-04-13T01:52:39.882Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $71,160 | -0.60% |
+| ETH | $2,203.71 | -0.60% |
+
+**Total Market Cap:** $2.50T (-0.47%)
+**24h Volume:** $73.38B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Aave V4 | $13.8M | +56.63% | +139.09% | Lending |
+| cBridge | $22.2M | +19.70% | +0.64% | Bridge |
+| Gimo | $11.4M | +13.18% | +26.39% | Liquid Staking |
+| Rysk V12 | $57.7M | +8.47% | +20.19% | Options |
+| Echo Lending | $134.3M | +7.36% | +18.32% | Lending |
+| BitMart | $11.8M | +7.34% | -12.36% | CEX |
+| Lombard Vaults | $49.9M | +7.25% | +25.22% | Onchain Capital Allocator |
+| XION Finance | $24.7M | +7.16% | +17.29% | Chain |
+| Figure Markets Democratized Prime | $37.7M | +6.87% | -31.06% | RWA Lending |
+| Yearn Curating | $83.1M | +6.43% | -3.08% | Risk Curators |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Fragmetric | $10.8M | -17.31% | -15.93% | Liquid Restaking |
+| Katana Pre-Launch | $18.9M | -13.16% | +0.03% | Farm |
+| Native Credit Pool | $48.1M | -12.05% | -9.44% | Lending |
+| Project 0 | $50.0M | -11.16% | +0.00% | Lending |
+| Tulipa Capital | $44.2M | -10.80% | -12.68% | Risk Curators |
+| BYDFi | $85.3M | -10.36% | -5.76% | CEX |
+| Velodrome V3 | $26.8M | -9.63% | +35.55% | Dexs |
+| Chiliz Governance Staking | $87.1M | -8.71% | -7.60% | Chain |
+| cap | $281.1M | -7.91% | -14.02% | Lending |
+| Kinetiq Earn | $49.8M | -7.81% | +5.09% | Yield Aggregator |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $184.43B | +0.08% | +0.15% |
+| USDC (USD Coin) | $78.66B | -0.15% | +1.55% |
+| DAI (Dai) | $4.64B | -0.59% | -1.29% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| PancakeSwap AMM V3 | $600.3M | +17.03% |
+| Uniswap V3 | $462.6M | +51.97% |
+| Aerodrome Slipstream | $428.7M | +23.48% |
+| Uniswap V4 | $375.5M | -5.49% |
+| Kalshi | $189.8M | +6.24% |
+| BisonFi | $181.0M | +27.53% |
+| Polymarket International | $161.3M | +10.02% |
+| Orca DEX | $150.7M | +11.36% |
+| PancakeSwap Infinity | $148.6M | +40.01% |
+| Tessera V | $121.6M | -12.54% |
+
+## Market Signals
+
+- [NOTABLE] [BEARISH] Stablecoin supply -0.66% (1d)
+
+## Investment Considerations
+
+- Stablecoin supply contracting — capital may be exiting the crypto market
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-04-12</title>
@@ -98,7 +187,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-04-11</title>
 <link>https://github.com/AriaYD/defi-radar</link>
