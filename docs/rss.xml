@@ -5,8 +5,101 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Mon, 04 May 2026 02:01:27 GMT</lastBuildDate>
+<lastBuildDate>Tue, 05 May 2026 02:01:18 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-05-05</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-05-05</guid>
+<pubDate>Tue, 05 May 2026 02:01:18 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-05-05
+
+**Generated at:** 2026-05-05T02:01:03.731Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $80,326 | +0.83% |
+| ETH | $2,360.98 | +0.41% |
+
+**Total Market Cap:** $2.74T (+0.58%)
+**24h Volume:** $124.12B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| SuperEarn | $24.7M | +121.06% | -5.41% | Yield |
+| Usual USD0 | $100.8M | +48.54% | -0.09% | RWA |
+| CEX.IO | $11.3M | +46.47% | +26.76% | CEX |
+| TermFinance Vaults | $10.5M | +45.96% | -21.12% | Yield |
+| Tonstakers LSD | $135.7M | +30.46% | +43.60% | Liquid Staking |
+| Steakhouse Financial | $1.85B | +24.89% | +19.92% | Risk Curators |
+| OSL | $48.7M | +24.07% | -27.63% | CEX |
+| EVAA Protocol | $14.1M | +23.97% | +27.89% | Lending |
+| Stakee | $23.5M | +19.10% | +26.51% | Liquid Staking |
+| BitMart | $19.5M | +18.86% | +40.96% | CEX |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Ink Bridge | $36.9M | -21.40% | -30.03% | Canonical Bridge |
+| UltraYield Vaults | $17.8M | -21.30% | -32.94% | Onchain Capital Allocator |
+| Meteora DAMM V2 | $28.3M | -20.55% | -20.55% | Dexs |
+| Yearn Finance | $145.5M | -16.98% | -14.39% | Yield Aggregator |
+| Free Protocol | $276.7M | -15.99% | -16.23% | Bridge |
+| Meteora DLMM | $229.8M | -15.52% | -18.19% | Dexs |
+| Origami Finance | $44.1M | -13.95% | -17.56% | Leveraged Farming |
+| Bedrock uniBTC | $322.2M | -10.98% | -10.00% | Anchor BTC |
+| Venus Flux | $31.9M | -10.70% | -57.30% | Lending |
+| Hyperliquid Spot Orderbook | $152.0M | -10.17% | -4.64% | Dexs |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $189.50B | -0.01% | -0.08% |
+| USDC (USD Coin) | $78.81B | +1.88% | +1.39% |
+| DAI (Dai) | $4.61B | -0.30% | -0.90% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V4 | $827.2M | +106.24% |
+| Uniswap V3 | $820.1M | +169.52% |
+| PancakeSwap AMM V3 | $815.2M | +92.81% |
+| Aerodrome Slipstream | $580.3M | +155.54% |
+| BisonFi | $326.5M | +231.53% |
+| Orca DEX | $222.8M | +162.21% |
+| Curve DEX | $219.2M | +308.77% |
+| Kalshi | $199.4M | +5.05% |
+| PancakeSwap Infinity | $190.5M | -28.86% |
+| Fluid DEX | $190.0M | +203.90% |
+
+## Market Signals
+
+- [SIGNIFICANT] [BULLISH] Average protocol TVL change: +12.3%
+- [NOTABLE] [BULLISH] Stablecoin supply +1.58% (1d)
+- [SIGNIFICANT] [NEUTRAL] Uniswap V4 volume +106% in 24h
+
+## Investment Considerations
+
+- DeFi TVL growing — capital flowing into protocols, confidence building
+- Stablecoin supply increasing — new capital entering the crypto market
+- DEX volume surging — high trading activity, watch for volatility
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-05-04</title>
@@ -96,7 +189,6 @@ Market conditions stable — no significant signals detected
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-05-03</title>
 <link>https://github.com/AriaYD/defi-radar</link>
@@ -2585,94 +2677,6 @@ Market conditions stable — no significant signals detected
 ## Investment Considerations
 
 - Market conditions stable — no significant signals detected
-
----
-*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
-</pre>
-]]></description>
-</item>
-<item>
-<title>DeFi Daily Report 2026-04-05</title>
-<link>https://github.com/AriaYD/defi-radar</link>
-<guid>https://github.com/AriaYD/defi-radar#2026-04-05</guid>
-<pubDate>Sun, 05 Apr 2026 01:43:23 GMT</pubDate>
-<description><![CDATA[
-<pre># DeFi Market Intelligence Report — 2026-04-05
-
-**Generated at:** 2026-04-05T01:43:07.947Z
-
-## Market Overview
-
-| | Price | 24h Change |
-|---|---:|---:|
-| BTC | $67,081 | +0.36% |
-| ETH | $2,057.51 | +0.31% |
-
-**Total Market Cap:** $2.39T (+0.29%)
-**24h Volume:** $47.81B
-
-## Protocol TVL Changes
-
-### Top Gainers (TVL 24h)
-
-| Protocol | TVL | 1d | 7d | Category |
-|---|---:|---:|---:|---|
-| Manifest Trade | $21.0M | +21.81% | +25.05% | Dexs |
-| SparkDEX V4 | $16.4M | +21.77% | +26.78% | Dexs |
-| Jupiter Lend | $936.3M | +12.03% | -5.94% | Lending |
-| Reservoir Protocol | $169.8M | +8.01% | +8.70% | CDP |
-| Rysk V12 | $45.5M | +7.88% | +3.53% | Options |
-| Solera | $10.2M | +7.19% | -4.09% | Lending |
-| Polymarket | $454.5M | +7.02% | -2.02% | Prediction Market |
-| Jupiter Perpetual Exchange | $692.4M | +6.70% | -16.10% | Derivatives |
-| Linea Bridge | $369.3M | +5.73% | +9.09% | Canonical Bridge |
-| Angstrom | $10.0M | +4.88% | +6.84% | Dexs |
-
-### Top Losers (TVL 24h)
-
-| Protocol | TVL | 1d | 7d | Category |
-|---|---:|---:|---:|---|
-| Figure Markets Democratized Prime | $55.1M | -27.32% | +716.02% | RWA Lending |
-| NAVI Lending | $117.1M | -15.17% | -16.47% | Lending |
-| Republic Note | $12.5M | -10.91% | -7.55% | RWA |
-| Uniswap V4 | $625.6M | -10.25% | +2.92% | Dexs |
-| SushiSwap | $41.3M | -8.20% | -6.22% | Dexs |
-| xStocks | $335.1M | -7.73% | -2.89% | RWA |
-| Midas RWA | $214.4M | -7.42% | -0.13% | RWA |
-| Lista DEX | $52.5M | -7.15% | +0.00% | Dexs |
-| LeveX | $10.2M | -6.86% | -5.07% | CEX |
-| BigONE | $35.2M | -6.43% | -5.58% | CEX |
-
-## Stablecoin Supply
-
-| Stablecoin | Supply | 1d Change | 7d Change |
-|---|---:|---:|---:|
-| USDT (Tether) | $184.10B | +0.10% | -0.02% |
-| USDC (USD Coin) | $77.42B | +0.26% | -0.42% |
-| DAI (Dai) | $4.70B | +0.30% | +3.16% |
-
-## DEX Trading Volume
-
-| DEX | 24h Volume | 24h Change |
-|---|---:|---:|
-| PancakeSwap AMM V3 | $442.8M | +0.00% |
-| Uniswap V3 | $345.4M | +0.00% |
-| Uniswap V4 | $340.5M | -20.90% |
-| Aerodrome Slipstream | $167.9M | -2.42% |
-| BisonFi | $158.1M | +0.00% |
-| Kalshi | $141.5M | +0.00% |
-| HumidiFi | $133.6M | +0.00% |
-| Tessera V | $129.7M | +0.00% |
-| Polymarket | $120.0M | +0.00% |
-| PancakeSwap Infinity | $114.8M | -20.73% |
-
-## Market Signals
-
-- [NOTABLE] [BULLISH] Stablecoin supply +0.66% (1d)
-
-## Investment Considerations
-
-- Stablecoin supply increasing — new capital entering the crypto market
 
 ---
 *This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
