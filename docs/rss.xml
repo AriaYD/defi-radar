@@ -5,8 +5,97 @@
 <title>DeFi Daily News RSS</title>
 <link>https://github.com/AriaYD/defi-radar</link>
 <description>Automated daily DeFi report feed</description>
-<lastBuildDate>Thu, 17 Sep 2026 02:33:16 GMT</lastBuildDate>
+<lastBuildDate>Fri, 18 Sep 2026 02:19:13 GMT</lastBuildDate>
 
+
+<item>
+<title>DeFi Daily Report 2026-09-18</title>
+<link>https://github.com/AriaYD/defi-radar</link>
+<guid>https://github.com/AriaYD/defi-radar#2026-09-18</guid>
+<pubDate>Fri, 18 Sep 2026 02:19:13 GMT</pubDate>
+<description><![CDATA[
+<pre># DeFi Market Intelligence Report — 2026-09-18
+
+**Generated at:** 2026-09-18T02:18:53.518Z
+
+## Market Overview
+
+| | Price | 24h Change |
+|---|---:|---:|
+| BTC | $76,703 | +0.76% |
+| ETH | $2,454.84 | +1.51% |
+
+**Total Market Cap:** $2.64T (-1.74%)
+**24h Volume:** $77.87B
+
+## Protocol TVL Changes
+
+### Top Gainers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Wildcat Protocol | $10.3M | +132.78% | +115.26% | Uncollateralized Lending |
+| Flowdesk | $14.5M | +92.50% | +140.70% | Risk Curators |
+| Circle Bitcoin | $56.9M | +86.93% | +7860550.67% | Bridge |
+| Tydro | $131.0M | +47.88% | +48.64% | Lending |
+| Contango V2 | $12.2M | +45.74% | +0.00% | Derivatives |
+| Felix Vaults | $57.1M | +37.02% | +36.69% | Onchain Capital Allocator |
+| Aera V3 | $184.9M | +26.94% | +26.12% | Onchain Capital Allocator |
+| Plume Vaults | $207.1M | +26.90% | +31.78% | RWA |
+| RHEA LST | $27.7M | +20.91% | +25.93% | Liquid Staking |
+| Gravity by Galxe | $31.2M | +18.61% | +39.75% | Canonical Bridge |
+
+### Top Losers (TVL 24h)
+
+| Protocol | TVL | 1d | 7d | Category |
+|---|---:|---:|---:|---|
+| Anemoy Capital | $350.1M | -46.14% | -53.32% | RWA |
+| Exponent Yield Exchange | $70.1M | -13.31% | -32.65% | Yield |
+| sDAI | $45.0M | -9.13% | -10.53% | Yield |
+| SunX Bridge | $24.0M | -7.62% | -5.76% | Bridge |
+| Grove Finance | $1.27B | -6.84% | -37.05% | Onchain Capital Allocator |
+| AO Bridge | $60.7M | -6.38% | +0.98% | Canonical Bridge |
+| Reservoir Protocol | $70.8M | -5.94% | -1.51% | CDP |
+| Kodiak V3 | $13.6M | -5.51% | +12.49% | Dexs |
+| Vesper | $86.8M | -5.29% | +16.34% | Yield Aggregator |
+| Asseto AoABT | $22.4M | -5.23% | -5.23% | RWA |
+
+## Stablecoin Supply
+
+| Stablecoin | Supply | 1d Change | 7d Change |
+|---|---:|---:|---:|
+| USDT (Tether) | $183.25B | -0.00% | -0.07% |
+| USDC (USD Coin) | $73.90B | +0.17% | -0.57% |
+| DAI (Dai) | $4.77B | -0.15% | -0.18% |
+
+## DEX Trading Volume
+
+| DEX | 24h Volume | 24h Change |
+|---|---:|---:|
+| Uniswap V4 | $1.53B | -32.80% |
+| Uniswap V3 | $1.22B | -19.70% |
+| PancakeSwap AMM V3 | $545.6M | -17.50% |
+| BisonFi | $440.1M | +0.00% |
+| Kalshi | $419.7M | -0.73% |
+| Aerodrome Slipstream | $365.4M | -22.87% |
+| PumpSwap | $329.3M | -25.40% |
+| HumidiFi | $301.8M | +0.00% |
+| 1inch Aqua | $283.3M | +402.89% |
+| Raydium AMM | $283.2M | +9.17% |
+
+## Market Signals
+
+- [SIGNIFICANT] [BULLISH] Average protocol TVL change: +21.2%
+
+## Investment Considerations
+
+- DeFi TVL growing — capital flowing into protocols, confidence building
+
+---
+*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
+</pre>
+]]></description>
+</item>
 
 <item>
 <title>DeFi Daily Report 2026-09-17</title>
@@ -96,7 +185,6 @@
 </pre>
 ]]></description>
 </item>
-
 <item>
 <title>DeFi Daily Report 2026-09-16</title>
 <link>https://github.com/AriaYD/defi-radar</link>
@@ -2591,94 +2679,6 @@ Market conditions stable — no significant signals detected
 - DeFi TVL growing — capital flowing into protocols, confidence building
 - Stablecoin supply increasing — new capital entering the crypto market
 - DEX volume surging — high trading activity, watch for volatility
-
----
-*This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
-</pre>
-]]></description>
-</item>
-<item>
-<title>DeFi Daily Report 2026-08-19</title>
-<link>https://github.com/AriaYD/defi-radar</link>
-<guid>https://github.com/AriaYD/defi-radar#2026-08-19</guid>
-<pubDate>Wed, 19 Aug 2026 00:42:04 GMT</pubDate>
-<description><![CDATA[
-<pre># DeFi Market Intelligence Report — 2026-08-19
-
-**Generated at:** 2026-08-19T00:41:45.367Z
-
-## Market Overview
-
-| | Price | 24h Change |
-|---|---:|---:|
-| BTC | $64,602 | +0.40% |
-| ETH | $1,915.45 | +0.41% |
-
-**Total Market Cap:** $2.29T (+0.25%)
-**24h Volume:** $46.78B
-
-## Protocol TVL Changes
-
-### Top Gainers (TVL 24h)
-
-| Protocol | TVL | 1d | 7d | Category |
-|---|---:|---:|---:|---|
-| Bitget bgBTC | $72.4M | +1940888797.17% | +1959992936.41% | Bridge |
-| PulseX V1 | $51.0M | +80.84% | +67.60% | Dexs |
-| Curvance | $122.3M | +38.19% | +44.97% | Lending |
-| Tempo Stablecoin Dex | $11.4M | +22.51% | +54.79% | Dexs |
-| Exponent Strategy Vaults | $12.3M | +20.91% | -3.72% | Onchain Capital Allocator |
-| Current | $20.1M | +16.65% | +25.38% | Lending |
-| PulseX V2 | $26.8M | +13.01% | +19.55% | Dexs |
-| Lighter Robinhood Perps | $25.8M | +7.58% | +122.12% | Derivatives |
-| edgeX Bridge | $75.9M | +7.17% | +6.53% | Bridge |
-| Frankencoin | $72.4M | +5.88% | +6.04% | CDP |
-
-### Top Losers (TVL 24h)
-
-| Protocol | TVL | 1d | 7d | Category |
-|---|---:|---:|---:|---|
-| Agua | $10.8M | -26.94% | +37.94% | Onchain Capital Allocator |
-| Nexus BTC | $153.3M | -25.17% | -35.76% | Bridge |
-| Lombard Vaults | $28.6M | -11.81% | +14.64% | Onchain Capital Allocator |
-| Bitget SOL | $12.5M | -11.18% | -27.82% | Liquid Staking |
-| OSL | $19.8M | -8.65% | -6.09% | CEX |
-| RIF ON CHAIN | $21.9M | -7.68% | +2.13% | Dual-Token Stablecoin |
-| CIAN Yield Layer | $246.5M | -7.27% | -6.96% | Yield Aggregator |
-| GLIF | $18.4M | -6.78% | -12.04% | Liquid Staking |
-| Zoo Finance | $17.0M | -5.79% | -31.12% | Yield |
-| Native Credit Pool | $24.3M | -5.55% | -19.66% | Lending |
-
-## Stablecoin Supply
-
-| Stablecoin | Supply | 1d Change | 7d Change |
-|---|---:|---:|---:|
-| USDT (Tether) | $182.96B | -0.04% | +0.51% |
-| USDC (USD Coin) | $71.97B | +0.00% | -0.49% |
-| DAI (Dai) | $4.77B | +0.07% | -0.44% |
-
-## DEX Trading Volume
-
-| DEX | 24h Volume | 24h Change |
-|---|---:|---:|
-| Uniswap V4 | $704.2M | -0.35% |
-| PancakeSwap AMM V3 | $512.9M | +0.00% |
-| Uniswap V3 | $384.3M | -21.78% |
-| PumpSwap | $372.9M | +0.00% |
-| Kalshi | $367.4M | +0.00% |
-| Aerodrome Slipstream | $354.9M | -9.66% |
-| BisonFi | $208.4M | +0.00% |
-| PancakeSwap Infinity | $150.1M | -7.09% |
-| Metric V2 | $139.6M | +10.75% |
-| HumidiFi | $137.9M | +0.00% |
-
-## Market Signals
-
-- [SIGNIFICANT] [BULLISH] Average protocol TVL change: +97044444.7%
-
-## Investment Considerations
-
-- DeFi TVL growing — capital flowing into protocols, confidence building
 
 ---
 *This report is generated from DeFiLlama and CoinGecko public APIs. It is for informational purposes only and does not constitute financial advice. Always do your own research.*
